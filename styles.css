@@ -756,8 +756,33 @@ a { color: inherit; }
 }
 
 .course-card.featured {
+  position: relative;
   border-color: var(--accent);
   background: var(--accent-soft);
+  overflow: hidden;
+}
+
+.course-badge {
+  position: absolute;
+  top: 16px;
+  right: -34px;
+  transform: rotate(45deg);
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 5px 40px;
+  box-shadow: 0 4px 10px rgba(91, 77, 251, 0.35);
+}
+
+.course-savings {
+  color: var(--accent-dark);
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-top: -4px;
+  margin-bottom: 4px;
 }
 
 .course-tag {
