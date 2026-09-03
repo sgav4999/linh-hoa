@@ -766,7 +766,7 @@ a { color: inherit; }
   position: absolute;
   top: 34px;
   right: -18px;
-  width: 160px;
+  width: 200px;
   transform: rotate(45deg);
   background: var(--accent);
   color: #fff;
