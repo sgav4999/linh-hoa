@@ -35,12 +35,67 @@
   <section class="hero">
     <div class="hero-glow"></div>
     <div class="container hero-inner">
-      <span class="eyebrow">State-Approved Pre-Licensing Education</span>
-      <h1>Get <span class="accent-text">licensed</span> to sell life &amp; health insurance.</h1>
-      <p class="hero-sub">Self-paced online courses that prepare you to pass your state licensing exam — built by licensed agents, approved for continuing and pre-licensing education nationwide.</p>
-      <div class="hero-actions">
-        <a href="signup.html" class="btn btn-primary btn-lg">Enroll Now</a>
-        <a href="courses.html" class="btn btn-ghost btn-lg">View Courses &rarr;</a>
+      <div class="hero-copy reveal visible">
+        <span class="eyebrow">State-Approved Pre-Licensing Education</span>
+        <h1>Get <span class="accent-text">licensed</span> to sell life &amp; health insurance.</h1>
+        <p class="hero-sub">Self-paced online courses that prepare you to pass your state licensing exam — built by licensed agents, approved for continuing and pre-licensing education nationwide.</p>
+        <div class="hero-actions">
+          <a href="signup.html" class="btn btn-primary btn-lg">Enroll Now</a>
+          <a href="courses.html" class="btn btn-ghost btn-lg">View Courses &rarr;</a>
+        </div>
+      </div>
+      <div class="hero-illustration reveal visible" aria-hidden="true">
+        <svg viewBox="0 0 440 440" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <clipPath id="cardClip">
+              <rect x="90" y="128" width="260" height="172" rx="18"/>
+            </clipPath>
+            <filter id="softBlur" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="18"/>
+            </filter>
+          </defs>
+
+          <circle cx="220" cy="216" r="164" fill="#5b4dfb" opacity="0.35" filter="url(#softBlur)"/>
+          <circle cx="220" cy="216" r="188" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" stroke-dasharray="3 9"/>
+
+          <g class="float-slow">
+            <g clip-path="url(#cardClip)">
+              <rect x="90" y="128" width="260" height="172" fill="#ffffff"/>
+              <rect x="90" y="128" width="260" height="42" fill="#5b4dfb"/>
+            </g>
+            <rect x="90" y="128" width="260" height="172" rx="18" fill="none" stroke="rgba(11,14,23,0.08)" stroke-width="1.5"/>
+
+            <circle cx="113" cy="149" r="9" fill="#ffffff" opacity="0.9"/>
+            <rect x="130" y="144" width="70" height="6" rx="3" fill="#ffffff" opacity="0.85"/>
+            <rect x="130" y="154" width="44" height="5" rx="2.5" fill="#ffffff" opacity="0.6"/>
+
+            <rect x="112" y="192" width="150" height="8" rx="4" fill="#e7e8f0"/>
+            <rect x="112" y="210" width="190" height="8" rx="4" fill="#e7e8f0"/>
+            <rect x="112" y="228" width="110" height="8" rx="4" fill="#e7e8f0"/>
+
+            <rect x="112" y="256" width="70" height="20" rx="10" fill="#eeecff"/>
+            <text x="147" y="270" font-family="Plus Jakarta Sans, sans-serif" font-size="10" font-weight="700" fill="#4636e0" text-anchor="middle">LICENSED</text>
+
+            <circle cx="332" cy="292" r="40" fill="#f2b544" opacity="0.25" class="pulse-soft"/>
+            <circle cx="332" cy="292" r="30" fill="#f2b544" stroke="#ffffff" stroke-width="4"/>
+            <path d="M317,292 L328,303 L349,280" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+
+          <g class="float-med">
+            <path d="M368,84 L393,95 L393,118 C393,137 380,151 368,157 C356,151 343,137 343,118 L343,95 Z" fill="#0b0e17" stroke="#5b4dfb" stroke-width="2"/>
+            <path d="M357,118 L366,127 L381,107" fill="none" stroke="#f2b544" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+
+          <g class="float-fast" transform="translate(38,300) scale(1.7)">
+            <path d="M12 21s-6.7-4.35-9.5-8.5C.7 9.9 1.7 6 5 5c2-.6 3.8.4 5 2 1.2-1.6 3-2.6 5-2 3.3 1 4.3 4.9 2.5 7.5C18.7 16.65 12 21 12 21z" fill="#f2b544"/>
+            <path d="M8.2 11l2.4 2.4L15.6 8" fill="none" stroke="#0b0e17" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+
+          <circle class="float-med" cx="120" cy="86" r="5" fill="#ffffff" opacity="0.5"/>
+          <circle class="float-slow" cx="302" cy="66" r="4" fill="#f2b544" opacity="0.6"/>
+          <circle class="float-fast" cx="70" cy="196" r="6" fill="#5b4dfb" opacity="0.4"/>
+          <circle class="float-slow" cx="392" cy="238" r="5" fill="#ffffff" opacity="0.4"/>
+        </svg>
       </div>
     </div>
     <div class="logo-strip">
@@ -58,13 +113,13 @@
 
   <section class="section" id="courses">
     <div class="container">
-      <div class="section-head">
+      <div class="section-head reveal">
         <span class="eyebrow eyebrow-dark">Our Courses</span>
         <h2>Choose your licensing path</h2>
         <p class="section-sub">Every course includes video lessons, practice exams, and a printable study guide — all built around your state's exam content outline.</p>
       </div>
       <div class="course-grid">
-        <div class="course-card">
+        <div class="course-card reveal">
           <span class="course-tag">Life</span>
           <h3>Life Insurance License</h3>
           <p class="course-desc">Everything you need to pass your state's Life Insurance licensing exam.</p>
@@ -77,7 +132,7 @@
           </ul>
           <a href="courses.html" class="btn btn-secondary">Learn More</a>
         </div>
-        <div class="course-card featured">
+        <div class="course-card featured reveal" style="transition-delay: 0.12s;">
           <span class="course-tag">Life + Health</span>
           <h3>Life &amp; Health Combo</h3>
           <p class="course-desc">The most popular path — get licensed in both lines with one course.</p>
@@ -90,7 +145,7 @@
           </ul>
           <a href="courses.html" class="btn btn-primary">Learn More</a>
         </div>
-        <div class="course-card">
+        <div class="course-card reveal" style="transition-delay: 0.24s;">
           <span class="course-tag">Health</span>
           <h3>Health Insurance License</h3>
           <p class="course-desc">Everything you need to pass your state's Health Insurance licensing exam.</p>
@@ -109,36 +164,36 @@
 
   <section class="stats-band">
     <div class="container stats-grid">
-      <div class="stat"><span class="stat-num">12,000+</span><span class="stat-label">Licensed Graduates</span></div>
-      <div class="stat"><span class="stat-num">50</span><span class="stat-label">States Approved</span></div>
-      <div class="stat"><span class="stat-num">95%</span><span class="stat-label">Exam Pass Rate</span></div>
-      <div class="stat"><span class="stat-num">24/7</span><span class="stat-label">Online Access</span></div>
+      <div class="stat reveal"><span class="stat-num">12,000+</span><span class="stat-label">Licensed Graduates</span></div>
+      <div class="stat reveal" style="transition-delay: 0.08s;"><span class="stat-num">50</span><span class="stat-label">States Approved</span></div>
+      <div class="stat reveal" style="transition-delay: 0.16s;"><span class="stat-num">95%</span><span class="stat-label">Exam Pass Rate</span></div>
+      <div class="stat reveal" style="transition-delay: 0.24s;"><span class="stat-num">24/7</span><span class="stat-label">Online Access</span></div>
     </div>
   </section>
 
   <section class="section section-alt" id="how-it-works">
     <div class="container">
-      <div class="section-head">
+      <div class="section-head reveal">
         <span class="eyebrow eyebrow-dark">How It Works</span>
         <h2>From sign-up to licensed agent</h2>
       </div>
       <div class="process-grid">
-        <div class="process-step">
+        <div class="process-step reveal">
           <span class="process-num">01</span>
           <h3>Enroll</h3>
           <p>Create an account and pick the course that matches the license you need.</p>
         </div>
-        <div class="process-step">
+        <div class="process-step reveal" style="transition-delay: 0.08s;">
           <span class="process-num">02</span>
           <h3>Study</h3>
           <p>Work through video lessons and practice exams at your own pace, on any device.</p>
         </div>
-        <div class="process-step">
+        <div class="process-step reveal" style="transition-delay: 0.16s;">
           <span class="process-num">03</span>
           <h3>Take the State Exam</h3>
           <p>Schedule your exam through your state's testing provider once you're ready.</p>
         </div>
-        <div class="process-step">
+        <div class="process-step reveal" style="transition-delay: 0.24s;">
           <span class="process-num">04</span>
           <h3>Get Licensed</h3>
           <p>Pass your exam, submit your application, and start selling as a licensed agent.</p>
@@ -149,7 +204,7 @@
 
   <section class="section testimonial-section">
     <div class="container">
-      <blockquote class="testimonial">
+      <blockquote class="testimonial reveal">
         <p>&ldquo;I passed my Life &amp; Health exam on the first try. The practice exams matched the real thing almost question for question.&rdquo;</p>
         <footer>
           <span class="testimonial-name">Marcus Diallo</span>
@@ -160,7 +215,7 @@
   </section>
 
   <section class="cta-band">
-    <div class="container cta-inner">
+    <div class="container cta-inner reveal">
       <h2>Ready to get licensed?</h2>
       <p>Create your free account and start your first lesson today.</p>
       <a href="signup.html" class="btn btn-primary btn-lg">Enroll Now</a>
