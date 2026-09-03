@@ -62,7 +62,8 @@
       </div>
 
       <div class="contact-card reveal" style="transition-delay: 0.1s;">
-        <form class="contact-form">
+        <div id="formMessage" class="form-message"></div>
+        <form class="contact-form" id="contactForm">
           <div>
             <label for="name">Name</label>
             <input type="text" id="name" name="name" required>
@@ -124,5 +125,8 @@
 </footer>
 
 <script src="script.js"></script>
+<script src="supabase-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="contact.js"></script>
 </body>
 </html>
