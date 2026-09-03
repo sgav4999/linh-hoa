@@ -764,8 +764,8 @@ a { color: inherit; }
 
 .course-badge {
   position: absolute;
-  top: 19px;
-  right: -38px;
+  top: 34px;
+  right: -18px;
   width: 160px;
   transform: rotate(45deg);
   background: var(--accent);
