@@ -1197,6 +1197,138 @@ a { color: inherit; }
   justify-content: space-between;
 }
 
+/* Course management (staff) */
+.manage-container {
+  max-width: 760px;
+}
+
+.manage-container #formMessage {
+  margin-bottom: 20px;
+}
+
+.manage-toolbar {
+  margin-bottom: 24px;
+}
+
+.manage-empty {
+  color: var(--muted);
+  padding: 24px 0;
+}
+
+.manage-module-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.manage-module-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.manage-module-header h3 {
+  font-size: 1.05rem;
+}
+
+.manage-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.btn-manage {
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.btn-manage:hover { border-color: var(--accent); color: var(--accent); }
+.btn-manage:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.btn-manage-danger:hover { border-color: #b3261e; color: #b3261e; }
+
+.btn-manage-add {
+  margin-top: 8px;
+  border-style: dashed;
+}
+
+.manage-lesson-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.manage-lesson-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  background: var(--surface-alt);
+  border-radius: 8px;
+}
+
+.manage-lesson-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.manage-lesson-info strong {
+  font-size: 0.9rem;
+}
+
+.manage-lesson-meta {
+  font-size: 0.78rem;
+  color: var(--muted);
+  text-transform: capitalize;
+}
+
+.manage-form {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin: 12px 0 20px;
+  background: var(--surface-alt);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.manage-form label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.manage-form input,
+.manage-form select,
+.manage-form textarea {
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font: inherit;
+  background: #fff;
+}
+
+.manage-form textarea { resize: vertical; }
+
+.manage-form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
 /* Responsive */
 @media (max-width: 960px) {
   .services-grid { grid-template-columns: repeat(2, 1fr); }

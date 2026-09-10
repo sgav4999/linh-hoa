@@ -76,10 +76,10 @@
             <h3>Enrolled Students</h3>
             <p>View and manage student progress across all courses.</p>
           </div>
-          <div class="dashboard-card reveal" style="transition-delay: 0.08s;">
+          <a href="manage-course.html" class="dashboard-card reveal dashboard-card-link" style="transition-delay: 0.08s;">
             <h3>Course Content</h3>
-            <p>Update lessons, practice exams, and study guides.</p>
-          </div>
+            <p>Add, edit, or remove modules and lessons.</p>
+          </a>
           <div class="dashboard-card reveal" style="transition-delay: 0.16s;">
             <h3>Support Inbox</h3>
             <p>Respond to student questions submitted through Contact.</p>
@@ -103,15 +103,22 @@
 <script src="supabase-config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script src="auth.js"></script>
-<script src="course-data.js"></script>
 <script>
-  (function () {
-    if (typeof COURSE_DATA === "undefined") return;
-    const total = COURSE_DATA.modules.reduce((sum, mod) => sum + mod.lessons.length, 0);
+  (async function () {
+    const COURSE_SLUG = "life-health-combo";
+    const { data: course } = await supabaseClient.from("courses").select("id").eq("slug", COURSE_SLUG).single();
+    if (!course) return;
+
+    const { count: total } = await supabaseClient
+      .from("lessons")
+      .select("id, modules!inner(course_id)", { count: "exact", head: true })
+      .eq("modules.course_id", course.id);
+
     let completed = [];
     try {
-      completed = JSON.parse(localStorage.getItem("linhhoa_progress_" + COURSE_DATA.id)) || [];
+      completed = JSON.parse(localStorage.getItem("linhhoa_progress_" + COURSE_SLUG)) || [];
     } catch (e) {}
+
     const percent = total ? Math.round((completed.length / total) * 100) : 0;
     const summary = document.getElementById("courseProgressSummary");
     if (summary) summary.textContent = `${percent}% complete · 40 course hours`;

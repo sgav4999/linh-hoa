@@ -1,4 +1,5 @@
 const courseRoot = document.getElementById("courseRoot");
+const COURSE_SLUG = "life-health-combo";
 
 async function initCourse() {
   const { data: { session } } = await supabaseClient.auth.getSession();
@@ -7,13 +8,36 @@ async function initCourse() {
     return;
   }
 
-  const PROGRESS_KEY = "linhhoa_progress_" + COURSE_DATA.id;
+  const { data: course, error: courseError } = await supabaseClient
+    .from("courses")
+    .select("id, title")
+    .eq("slug", COURSE_SLUG)
+    .single();
+
+  if (courseError || !course) {
+    document.getElementById("lessonTitle").textContent = "This course couldn't be loaded.";
+    return;
+  }
+
+  const { data: moduleRows, error: modulesError } = await supabaseClient
+    .from("modules")
+    .select("id, title, position, lessons(id, title, duration, type, video_url, content, description, position)")
+    .eq("course_id", course.id)
+    .order("position")
+    .order("position", { foreignTable: "lessons" });
+
+  if (modulesError || !moduleRows || !moduleRows.length) {
+    document.getElementById("lessonTitle").textContent = "No lessons have been added to this course yet.";
+    return;
+  }
+
+  const PROGRESS_KEY = "linhhoa_progress_" + COURSE_SLUG;
 
   // Flatten modules into a single ordered lesson list for prev/next navigation.
   const lessons = [];
-  COURSE_DATA.modules.forEach((mod, moduleIndex) => {
+  moduleRows.forEach((mod) => {
     mod.lessons.forEach((lesson) => {
-      lessons.push({ ...lesson, moduleTitle: mod.title, moduleIndex });
+      lessons.push({ ...lesson, moduleTitle: mod.title });
     });
   });
 
@@ -45,7 +69,7 @@ async function initCourse() {
     const moduleList = document.getElementById("moduleList");
     moduleList.innerHTML = "";
 
-    COURSE_DATA.modules.forEach((mod) => {
+    moduleRows.forEach((mod) => {
       const modEl = document.createElement("div");
       modEl.className = "module";
 
@@ -107,7 +131,7 @@ async function initCourse() {
 
     const body = document.getElementById("lessonBody");
     if (lesson.type === "video") {
-      body.innerHTML = `<div class="video-wrapper"><iframe src="${lesson.videoUrl}" title="${lesson.title}" frameborder="0" allowfullscreen></iframe></div>`;
+      body.innerHTML = `<div class="video-wrapper"><iframe src="${lesson.video_url}" title="${lesson.title}" frameborder="0" allowfullscreen></iframe></div>`;
     } else {
       body.innerHTML = lesson.content || "";
     }
@@ -147,10 +171,10 @@ async function initCourse() {
 
   window.addEventListener("hashchange", renderLesson);
 
-  document.getElementById("courseTitle").textContent = COURSE_DATA.title;
+  document.getElementById("courseTitle").textContent = course.title;
   renderLesson();
 }
 
-if (courseRoot && typeof COURSE_DATA !== "undefined") {
+if (courseRoot) {
   initCourse();
 }
