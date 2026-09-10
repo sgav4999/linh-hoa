@@ -119,6 +119,7 @@
 <script>
   (async function () {
     const COURSE_SLUG = "life-health-combo";
+    const { data: { session } } = await supabaseClient.auth.getSession();
     const { data: course } = await supabaseClient.from("courses").select("id").eq("slug", COURSE_SLUG).single();
     if (!course) return;
 
@@ -127,12 +128,17 @@
       .select("id, modules!inner(course_id)", { count: "exact", head: true })
       .eq("modules.course_id", course.id);
 
-    let completed = [];
-    try {
-      completed = JSON.parse(localStorage.getItem("linhhoa_progress_" + COURSE_SLUG)) || [];
-    } catch (e) {}
+    let completedCount = 0;
+    if (session) {
+      const { count } = await supabaseClient
+        .from("lesson_progress")
+        .select("lesson_id, lessons!inner(modules!inner(course_id))", { count: "exact", head: true })
+        .eq("user_id", session.user.id)
+        .eq("lessons.modules.course_id", course.id);
+      completedCount = count || 0;
+    }
 
-    const percent = total ? Math.round((completed.length / total) * 100) : 0;
+    const percent = total ? Math.round((completedCount / total) * 100) : 0;
     const summary = document.getElementById("courseProgressSummary");
     if (summary) summary.textContent = `${percent}% complete · 40 course hours`;
   })();

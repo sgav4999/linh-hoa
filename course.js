@@ -31,8 +31,6 @@ async function initCourse() {
     return;
   }
 
-  const PROGRESS_KEY = "linhhoa_progress_" + COURSE_SLUG;
-
   // Flatten modules into a single ordered lesson list for prev/next navigation.
   const lessons = [];
   moduleRows.forEach((mod) => {
@@ -41,22 +39,59 @@ async function initCourse() {
     });
   });
 
-  function getCompletedIds() {
+  const { data: progressRows } = await supabaseClient
+    .from("lesson_progress")
+    .select("lesson_id")
+    .eq("user_id", session.user.id);
+
+  let completedIds = new Set((progressRows || []).map((r) => r.lesson_id));
+
+  // One-time migration for students whose progress only exists in this browser's
+  // localStorage from before progress was synced to their account.
+  const LEGACY_KEY = "linhhoa_progress_" + COURSE_SLUG;
+  if (completedIds.size === 0) {
+    let legacyIds = [];
     try {
-      return JSON.parse(localStorage.getItem(PROGRESS_KEY)) || [];
-    } catch (e) {
-      return [];
+      legacyIds = JSON.parse(localStorage.getItem(LEGACY_KEY)) || [];
+    } catch (e) {}
+    const validLegacyIds = legacyIds.filter((id) => lessons.some((l) => l.id === id));
+    if (validLegacyIds.length) {
+      const rows = validLegacyIds.map((lesson_id) => ({ user_id: session.user.id, lesson_id }));
+      const { error } = await supabaseClient.from("lesson_progress").upsert(rows);
+      if (!error) {
+        completedIds = new Set(validLegacyIds);
+        localStorage.removeItem(LEGACY_KEY);
+      }
     }
   }
 
-  function setCompleted(lessonId, isComplete) {
-    const completed = new Set(getCompletedIds());
+  function getCompletedIds() {
+    return [...completedIds];
+  }
+
+  async function setCompleted(lessonId, isComplete) {
     if (isComplete) {
-      completed.add(lessonId);
+      completedIds.add(lessonId);
+      const { error } = await supabaseClient
+        .from("lesson_progress")
+        .upsert({ user_id: session.user.id, lesson_id: lessonId });
+      if (error) {
+        completedIds.delete(lessonId);
+        return false;
+      }
     } else {
-      completed.delete(lessonId);
+      completedIds.delete(lessonId);
+      const { error } = await supabaseClient
+        .from("lesson_progress")
+        .delete()
+        .eq("user_id", session.user.id)
+        .eq("lesson_id", lessonId);
+      if (error) {
+        completedIds.add(lessonId);
+        return false;
+      }
     }
-    localStorage.setItem(PROGRESS_KEY, JSON.stringify([...completed]));
+    return true;
   }
 
   function currentLessonId() {
@@ -148,9 +183,13 @@ async function initCourse() {
     renderProgress();
   }
 
-  document.getElementById("completeCheckbox").addEventListener("change", (e) => {
+  document.getElementById("completeCheckbox").addEventListener("change", async (e) => {
     const lesson = lessons[lessons.findIndex((l) => l.id === currentLessonId())];
-    setCompleted(lesson.id, e.target.checked);
+    const desiredState = e.target.checked;
+    const ok = await setCompleted(lesson.id, desiredState);
+    if (!ok) {
+      e.target.checked = !desiredState;
+    }
     renderSidebar();
     renderProgress();
   });
