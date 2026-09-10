@@ -21,8 +21,10 @@
         <a href="about.html" class="active">About</a>
         <a href="contact.html">Contact</a>
       </nav>
-      <a href="login.html" class="btn-header-secondary">Log In</a>
-      <a href="signup.html" class="btn btn-primary btn-header">Sign Up</a>
+      <a href="login.html" class="btn-header-secondary" id="navLoginLink">Log In</a>
+      <a href="signup.html" class="btn btn-primary btn-header" id="navSignupLink">Sign Up</a>
+      <a href="dashboard.html" class="btn-header-secondary" id="navDashboardLink" style="display:none;">Dashboard</a>
+      <button class="btn btn-secondary btn-header" id="logoutBtn" style="display:none;">Log Out</button>
     </div>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
       <span></span><span></span><span></span>
@@ -116,5 +118,8 @@
 </footer>
 
 <script src="script.js"></script>
+<script src="supabase-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="auth.js"></script>
 </body>
 </html>

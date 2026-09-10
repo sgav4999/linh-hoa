@@ -126,3 +126,17 @@ if (logoutBtn) {
     window.location.href = "login.html";
   });
 }
+
+// Marketing-page header: swap Log In/Sign Up for Dashboard/Log Out when already signed in.
+const navLoginLink = document.getElementById("navLoginLink");
+if (navLoginLink) {
+  (async () => {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (!session) return;
+
+    navLoginLink.style.display = "none";
+    document.getElementById("navSignupLink").style.display = "none";
+    document.getElementById("navDashboardLink").style.display = "";
+    document.getElementById("logoutBtn").style.display = "";
+  })();
+}
