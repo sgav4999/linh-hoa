@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practice Exam — Linh Hoa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">Linh<span>Hoa</span></a>
+    <div class="nav-wrap" id="navWrap">
+      <nav class="nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="course.html">Course</a>
+      </nav>
+      <button id="logoutBtn" class="btn btn-logout btn-header">Log Out</button>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="examRoot">
+  <section class="page-hero">
+    <div class="hero-glow"></div>
+    <div class="container">
+      <span class="eyebrow">Practice Exam</span>
+      <h1>Test your knowledge</h1>
+      <p>Unlimited practice questions pulled from the state exam content outline.</p>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="container exam-container">
+      <div id="formMessage" class="form-message"></div>
+
+      <div id="examIntro" class="exam-intro">
+        <p id="examIntroText">Loading questions...</p>
+        <button id="startExamBtn" class="btn btn-primary btn-lg">Start Exam</button>
+      </div>
+
+      <div id="examQuiz" class="exam-quiz" hidden>
+        <div class="exam-status-bar">
+          <span id="examProgress"></span>
+          <span id="examTimer">0:00</span>
+        </div>
+        <div class="progress-bar-track"><div class="progress-bar-fill" id="examProgressFill" style="width: 0%;"></div></div>
+
+        <h2 id="examQuestionText" class="exam-question"></h2>
+        <div id="examOptions" class="exam-options"></div>
+
+        <div class="lesson-nav">
+          <button id="examPrevBtn" class="btn btn-secondary">&larr; Previous</button>
+          <button id="examNextBtn" class="btn btn-primary">Next &rarr;</button>
+        </div>
+      </div>
+
+      <div id="examResults" class="exam-results" hidden>
+        <div class="exam-score">
+          <span id="examScorePercent" class="exam-score-percent"></span>
+          <span id="examScoreLabel" class="exam-score-label"></span>
+        </div>
+        <p id="examTimeTaken" class="exam-time-taken"></p>
+        <button id="retakeExamBtn" class="btn btn-primary">Retake Exam</button>
+        <div id="examReview" class="exam-review"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-bottom">
+    <div class="container">
+      <p>&copy; <span id="year"></span> Linh Hoa. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<script src="supabase-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="auth.js"></script>
+<script src="practice-exam.js"></script>
+</body>
+</html>

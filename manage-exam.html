@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manage Practice Exam — Linh Hoa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">Linh<span>Hoa</span></a>
+    <div class="nav-wrap" id="navWrap">
+      <nav class="nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="practice-exam.html">Take Exam</a>
+      </nav>
+      <button id="logoutBtn" class="btn btn-logout btn-header">Log Out</button>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="manageExamRoot">
+  <section class="page-hero">
+    <div class="hero-glow"></div>
+    <div class="container">
+      <span class="eyebrow">Staff Only</span>
+      <h1>Manage Practice Exam</h1>
+      <p>Add, edit, or remove questions. Students see these changes the next time they start an exam.</p>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="container manage-container">
+      <div id="formMessage" class="form-message"></div>
+
+      <div class="manage-toolbar">
+        <button id="addQuestionBtn" class="btn btn-primary">+ Add Question</button>
+      </div>
+
+      <div id="questionFormContainer"></div>
+
+      <div id="questionList"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-bottom">
+    <div class="container">
+      <p>&copy; <span id="year"></span> Linh Hoa. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<script src="supabase-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="auth.js"></script>
+<script src="manage-exam.js"></script>
+</body>
+</html>

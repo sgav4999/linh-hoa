@@ -1,0 +1,213 @@
+const manageExamRoot = document.getElementById("manageExamRoot");
+
+async function initManageExam() {
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if (!session) {
+    window.location.href = "login.html";
+    return;
+  }
+  const role = session.user.user_metadata && session.user.user_metadata.role;
+  if (role !== "staff") {
+    window.location.href = "dashboard.html";
+    return;
+  }
+
+  const messageEl = document.getElementById("formMessage");
+  let questions = [];
+
+  function showMessage(text, type) {
+    messageEl.textContent = text;
+    messageEl.className = "form-message " + type;
+  }
+
+  function button(label, onClick, extraClass) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.textContent = label;
+    b.className = "btn-manage" + (extraClass ? " " + extraClass : "");
+    b.addEventListener("click", onClick);
+    return b;
+  }
+
+  async function loadQuestions() {
+    const { data, error } = await supabaseClient
+      .from("practice_questions")
+      .select("id, question, choice_a, choice_b, choice_c, choice_d, correct_choice, explanation, position")
+      .order("position");
+    if (error) {
+      showMessage("Could not load questions: " + error.message, "error");
+      return [];
+    }
+    return data || [];
+  }
+
+  async function refresh() {
+    document.getElementById("questionFormContainer").innerHTML = "";
+    questions = await loadQuestions();
+    renderQuestions();
+  }
+
+  function renderQuestions() {
+    const container = document.getElementById("questionList");
+    container.innerHTML = "";
+
+    if (!questions.length) {
+      const empty = document.createElement("p");
+      empty.className = "manage-empty";
+      empty.textContent = "No questions yet. Click “+ Add Question” to create the first one.";
+      container.appendChild(empty);
+      return;
+    }
+
+    questions.forEach((q, index) => {
+      const card = document.createElement("div");
+      card.className = "manage-module-card";
+      card.dataset.questionId = q.id;
+
+      const header = document.createElement("div");
+      header.className = "manage-module-header";
+
+      const title = document.createElement("h3");
+      title.textContent = `${index + 1}. ${q.question}`;
+
+      const actions = document.createElement("div");
+      actions.className = "manage-actions";
+
+      const upBtn = button("↑", () => moveQuestion(index, -1));
+      upBtn.disabled = index === 0;
+      const downBtn = button("↓", () => moveQuestion(index, 1));
+      downBtn.disabled = index === questions.length - 1;
+      const editBtn = button("Edit", () => openQuestionForm(q));
+      const deleteBtn = button("Delete", () => deleteQuestion(q), "btn-manage-danger");
+
+      [upBtn, downBtn, editBtn, deleteBtn].forEach((b) => actions.appendChild(b));
+      header.appendChild(title);
+      header.appendChild(actions);
+      card.appendChild(header);
+
+      const choices = document.createElement("div");
+      choices.className = "manage-lesson-list";
+      ["a", "b", "c", "d"].forEach((letter) => {
+        const row = document.createElement("div");
+        row.className = "manage-lesson-row";
+        const isCorrect = q.correct_choice === letter;
+        const label = document.createElement("span");
+        label.textContent = `${letter.toUpperCase()}. ${q["choice_" + letter]}`;
+        const mark = document.createElement("span");
+        mark.className = "manage-lesson-meta";
+        mark.textContent = isCorrect ? "Correct answer" : "";
+        row.appendChild(label);
+        row.appendChild(mark);
+        choices.appendChild(row);
+      });
+      card.appendChild(choices);
+
+      container.appendChild(card);
+    });
+  }
+
+  document.getElementById("addQuestionBtn").addEventListener("click", () => openQuestionForm(null));
+
+  function openQuestionForm(existing) {
+    const container = document.getElementById("questionFormContainer");
+    container.innerHTML = "";
+
+    const form = document.createElement("form");
+    form.className = "manage-form";
+    form.innerHTML = `
+      <label>Question</label>
+      <textarea name="question" rows="2" required></textarea>
+      <label>Choice A</label>
+      <input type="text" name="choiceA" required>
+      <label>Choice B</label>
+      <input type="text" name="choiceB" required>
+      <label>Choice C</label>
+      <input type="text" name="choiceC" required>
+      <label>Choice D</label>
+      <input type="text" name="choiceD" required>
+      <label>Correct choice</label>
+      <select name="correctChoice">
+        <option value="a">A</option>
+        <option value="b">B</option>
+        <option value="c">C</option>
+        <option value="d">D</option>
+      </select>
+      <label>Explanation (optional, shown after answering)</label>
+      <textarea name="explanation" rows="2"></textarea>
+      <div class="manage-form-actions">
+        <button type="submit" class="btn btn-primary">${existing ? "Save Question" : "Add Question"}</button>
+        <button type="button" class="btn btn-secondary" data-cancel>Cancel</button>
+      </div>
+    `;
+
+    if (existing) {
+      form.question.value = existing.question;
+      form.choiceA.value = existing.choice_a;
+      form.choiceB.value = existing.choice_b;
+      form.choiceC.value = existing.choice_c;
+      form.choiceD.value = existing.choice_d;
+      form.correctChoice.value = existing.correct_choice;
+      form.explanation.value = existing.explanation || "";
+    }
+
+    form.querySelector("[data-cancel]").addEventListener("click", () => {
+      container.innerHTML = "";
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const payload = {
+        question: form.question.value.trim(),
+        choice_a: form.choiceA.value.trim(),
+        choice_b: form.choiceB.value.trim(),
+        choice_c: form.choiceC.value.trim(),
+        choice_d: form.choiceD.value.trim(),
+        correct_choice: form.correctChoice.value,
+        explanation: form.explanation.value.trim() || null,
+      };
+      if (!payload.question) return;
+
+      if (existing) {
+        const { error } = await supabaseClient.from("practice_questions").update(payload).eq("id", existing.id);
+        if (error) return showMessage(error.message, "error");
+        showMessage("Question updated.", "success");
+      } else {
+        const { count } = await supabaseClient
+          .from("practice_questions")
+          .select("id", { count: "exact", head: true });
+        const { error } = await supabaseClient
+          .from("practice_questions")
+          .insert({ ...payload, position: (count || 0) + 1 });
+        if (error) return showMessage(error.message, "error");
+        showMessage("Question added.", "success");
+      }
+      refresh();
+    });
+
+    container.appendChild(form);
+    form.question.focus();
+  }
+
+  async function deleteQuestion(q) {
+    if (!window.confirm("Delete this question? This can't be undone.")) return;
+    const { error } = await supabaseClient.from("practice_questions").delete().eq("id", q.id);
+    if (error) return showMessage(error.message, "error");
+    showMessage("Question deleted.", "success");
+    refresh();
+  }
+
+  async function moveQuestion(index, direction) {
+    const current = questions[index];
+    const other = questions[index + direction];
+    if (!other) return;
+    await supabaseClient.from("practice_questions").update({ position: other.position }).eq("id", current.id);
+    await supabaseClient.from("practice_questions").update({ position: current.position }).eq("id", other.id);
+    refresh();
+  }
+
+  refresh();
+}
+
+if (manageExamRoot) {
+  initManageExam();
+}
