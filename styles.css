@@ -1242,6 +1242,30 @@ a { color: inherit; }
   margin-bottom: 12px;
 }
 
+.manage-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.drag-handle {
+  flex-shrink: 0;
+  cursor: grab;
+  color: var(--muted);
+  font-size: 1.1rem;
+  line-height: 1;
+  user-select: none;
+  touch-action: none;
+}
+
+.drag-handle:active { cursor: grabbing; }
+
+.manage-module-card.dragging,
+.manage-lesson-row.dragging {
+  opacity: 0.4;
+}
+
 .manage-module-header h3 {
   font-size: 1.05rem;
 }
@@ -1291,6 +1315,7 @@ a { color: inherit; }
 
 .manage-lesson-info {
   display: flex;
+  flex: 1;
   flex-direction: column;
   gap: 2px;
   min-width: 0;

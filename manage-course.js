@@ -81,7 +81,7 @@ async function initManage() {
       return;
     }
 
-    modules.forEach((mod, modIndex) => {
+    modules.forEach((mod) => {
       const modCard = document.createElement("div");
       modCard.className = "manage-module-card";
       modCard.dataset.moduleId = mod.id;
@@ -89,31 +89,40 @@ async function initManage() {
       const modHeader = document.createElement("div");
       modHeader.className = "manage-module-header";
 
+      const modTitleWrap = document.createElement("div");
+      modTitleWrap.className = "manage-title-wrap";
+      const modHandle = document.createElement("span");
+      modHandle.className = "drag-handle";
+      modHandle.textContent = "⠿";
+      modHandle.title = "Drag to reorder";
       const modTitle = document.createElement("h3");
       modTitle.textContent = mod.title;
+      modTitleWrap.appendChild(modHandle);
+      modTitleWrap.appendChild(modTitle);
 
       const modActions = document.createElement("div");
       modActions.className = "manage-actions";
 
-      const upBtn = button("↑", () => moveModule(modules, modIndex, -1));
-      upBtn.disabled = modIndex === 0;
-      const downBtn = button("↓", () => moveModule(modules, modIndex, 1));
-      downBtn.disabled = modIndex === modules.length - 1;
       const editBtn = button("Edit", () => openModuleForm(mod));
       const deleteBtn = button("Delete", () => deleteModule(mod), "btn-manage-danger");
 
-      [upBtn, downBtn, editBtn, deleteBtn].forEach((b) => modActions.appendChild(b));
-      modHeader.appendChild(modTitle);
+      [editBtn, deleteBtn].forEach((b) => modActions.appendChild(b));
+      modHeader.appendChild(modTitleWrap);
       modHeader.appendChild(modActions);
       modCard.appendChild(modHeader);
 
       const lessonList = document.createElement("div");
       lessonList.className = "manage-lesson-list";
 
-      mod.lessons.forEach((lesson, lessonIndex) => {
+      mod.lessons.forEach((lesson) => {
         const row = document.createElement("div");
         row.className = "manage-lesson-row";
         row.dataset.lessonId = lesson.id;
+
+        const handle = document.createElement("span");
+        handle.className = "drag-handle";
+        handle.textContent = "⠿";
+        handle.title = "Drag to reorder";
 
         const info = document.createElement("div");
         info.className = "manage-lesson-info";
@@ -129,14 +138,11 @@ async function initManage() {
 
         const actions = document.createElement("div");
         actions.className = "manage-actions";
-        const lUp = button("↑", () => moveLesson(mod, lessonIndex, -1));
-        lUp.disabled = lessonIndex === 0;
-        const lDown = button("↓", () => moveLesson(mod, lessonIndex, 1));
-        lDown.disabled = lessonIndex === mod.lessons.length - 1;
         const lEdit = button("Edit", () => openLessonForm(mod, lesson));
         const lDelete = button("Delete", () => deleteLesson(lesson), "btn-manage-danger");
-        [lUp, lDown, lEdit, lDelete].forEach((b) => actions.appendChild(b));
+        [lEdit, lDelete].forEach((b) => actions.appendChild(b));
 
+        row.appendChild(handle);
         row.appendChild(info);
         row.appendChild(actions);
         lessonList.appendChild(row);
@@ -148,6 +154,14 @@ async function initManage() {
       modCard.appendChild(addLessonBtn);
 
       container.appendChild(modCard);
+
+      makeListDraggable(lessonList, ".manage-lesson-row", ".drag-handle", (items) => {
+        reorderLessons(items);
+      });
+    });
+
+    makeListDraggable(container, ".manage-module-card", ".drag-handle", (items) => {
+      reorderModules(items);
     });
   }
 
@@ -211,12 +225,11 @@ async function initManage() {
     refresh();
   }
 
-  async function moveModule(modules, index, direction) {
-    const current = modules[index];
-    const other = modules[index + direction];
-    if (!other) return;
-    await supabaseClient.from("modules").update({ position: other.position }).eq("id", current.id);
-    await supabaseClient.from("modules").update({ position: current.position }).eq("id", other.id);
+  async function reorderModules(items) {
+    const ids = items.map((el) => el.dataset.moduleId);
+    await Promise.all(
+      ids.map((id, index) => supabaseClient.from("modules").update({ position: index + 1 }).eq("id", id))
+    );
     refresh();
   }
 
@@ -301,12 +314,11 @@ async function initManage() {
     refresh();
   }
 
-  async function moveLesson(mod, index, direction) {
-    const current = mod.lessons[index];
-    const other = mod.lessons[index + direction];
-    if (!other) return;
-    await supabaseClient.from("lessons").update({ position: other.position }).eq("id", current.id);
-    await supabaseClient.from("lessons").update({ position: current.position }).eq("id", other.id);
+  async function reorderLessons(items) {
+    const ids = items.map((el) => el.dataset.lessonId);
+    await Promise.all(
+      ids.map((id, index) => supabaseClient.from("lessons").update({ position: index + 1 }).eq("id", id))
+    );
     refresh();
   }
 

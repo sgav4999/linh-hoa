@@ -67,21 +67,25 @@ async function initManageExam() {
       const header = document.createElement("div");
       header.className = "manage-module-header";
 
+      const titleWrap = document.createElement("div");
+      titleWrap.className = "manage-title-wrap";
+      const handle = document.createElement("span");
+      handle.className = "drag-handle";
+      handle.textContent = "⠿";
+      handle.title = "Drag to reorder";
       const title = document.createElement("h3");
       title.textContent = `${index + 1}. ${q.question}`;
+      titleWrap.appendChild(handle);
+      titleWrap.appendChild(title);
 
       const actions = document.createElement("div");
       actions.className = "manage-actions";
 
-      const upBtn = button("↑", () => moveQuestion(index, -1));
-      upBtn.disabled = index === 0;
-      const downBtn = button("↓", () => moveQuestion(index, 1));
-      downBtn.disabled = index === questions.length - 1;
       const editBtn = button("Edit", () => openQuestionForm(q));
       const deleteBtn = button("Delete", () => deleteQuestion(q), "btn-manage-danger");
 
-      [upBtn, downBtn, editBtn, deleteBtn].forEach((b) => actions.appendChild(b));
-      header.appendChild(title);
+      [editBtn, deleteBtn].forEach((b) => actions.appendChild(b));
+      header.appendChild(titleWrap);
       header.appendChild(actions);
       card.appendChild(header);
 
@@ -103,6 +107,10 @@ async function initManageExam() {
       card.appendChild(choices);
 
       container.appendChild(card);
+    });
+
+    makeListDraggable(container, ".manage-module-card", ".drag-handle", (items) => {
+      reorderQuestions(items);
     });
   }
 
@@ -196,12 +204,11 @@ async function initManageExam() {
     refresh();
   }
 
-  async function moveQuestion(index, direction) {
-    const current = questions[index];
-    const other = questions[index + direction];
-    if (!other) return;
-    await supabaseClient.from("practice_questions").update({ position: other.position }).eq("id", current.id);
-    await supabaseClient.from("practice_questions").update({ position: current.position }).eq("id", other.id);
+  async function reorderQuestions(items) {
+    const ids = items.map((el) => el.dataset.questionId);
+    await Promise.all(
+      ids.map((id, index) => supabaseClient.from("practice_questions").update({ position: index + 1 }).eq("id", id))
+    );
     refresh();
   }
 

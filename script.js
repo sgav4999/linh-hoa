@@ -15,6 +15,47 @@ if (navToggle && navWrap) {
   });
 }
 
+// Make a list of items drag-to-reorder. Call this after rendering the list
+// (it re-attaches listeners to the current DOM each time).
+//   containerEl   - the element whose direct children are the items
+//   itemSelector  - CSS selector matching each reorderable item
+//   handleSelector- selector (within each item) that starts the drag
+//   onDrop        - called after a drop with the item elements in new order
+function makeListDraggable(containerEl, itemSelector, handleSelector, onDrop) {
+  if (!containerEl) return;
+  let draggedEl = null;
+
+  containerEl.querySelectorAll(itemSelector).forEach((item) => {
+    const handle = item.querySelector(handleSelector) || item;
+    handle.setAttribute("draggable", "true");
+
+    handle.addEventListener("dragstart", (e) => {
+      draggedEl = item;
+      e.dataTransfer.effectAllowed = "move";
+      setTimeout(() => item.classList.add("dragging"), 0);
+    });
+
+    handle.addEventListener("dragend", () => {
+      item.classList.remove("dragging");
+      draggedEl = null;
+    });
+
+    item.addEventListener("dragover", (e) => {
+      if (!draggedEl || draggedEl === item) return;
+      e.preventDefault();
+      const rect = item.getBoundingClientRect();
+      const before = e.clientY - rect.top < rect.height / 2;
+      item.parentNode.insertBefore(draggedEl, before ? item : item.nextSibling);
+    });
+
+    item.addEventListener("drop", (e) => {
+      if (!draggedEl) return;
+      e.preventDefault();
+      onDrop(Array.from(containerEl.querySelectorAll(itemSelector)));
+    });
+  });
+}
+
 // Animate a stat number (e.g. "12,000+", "95%") from 0 up to its target value.
 function animateStatNumber(el) {
   const text = el.textContent.trim();
