@@ -7,6 +7,12 @@ if (navToggle && navWrap) {
   navToggle.addEventListener("click", () => {
     navWrap.classList.toggle("open");
   });
+
+  navWrap.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      navWrap.classList.remove("open");
+    });
+  });
 }
 
 // Animate a stat number (e.g. "12,000+", "95%") from 0 up to its target value.
