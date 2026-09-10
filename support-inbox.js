@@ -58,6 +58,7 @@ async function initInbox() {
     filtered.forEach((s) => {
       const card = document.createElement("div");
       card.className = "inbox-card";
+      card.dataset.submissionId = s.id;
 
       const header = document.createElement("div");
       header.className = "inbox-card-header";
@@ -88,8 +89,32 @@ async function initInbox() {
       message.className = "inbox-message";
       message.textContent = s.message;
 
+      card.appendChild(header);
+      card.appendChild(meta);
+      card.appendChild(message);
+
+      if (s.reply) {
+        const replyBlock = document.createElement("div");
+        replyBlock.className = "inbox-reply-block";
+        const replyLabel = document.createElement("div");
+        replyLabel.className = "inbox-reply-label";
+        replyLabel.textContent = `Your reply · ${formatDate(s.replied_at)}`;
+        const replyText = document.createElement("p");
+        replyText.className = "inbox-reply-text";
+        replyText.textContent = s.reply;
+        replyBlock.appendChild(replyLabel);
+        replyBlock.appendChild(replyText);
+        card.appendChild(replyBlock);
+      }
+
       const actions = document.createElement("div");
       actions.className = "manage-actions";
+
+      const replyBtn = document.createElement("button");
+      replyBtn.type = "button";
+      replyBtn.className = "btn-manage";
+      replyBtn.textContent = s.reply ? "Edit Reply" : "Reply";
+      replyBtn.addEventListener("click", () => openReplyForm(s));
 
       const toggleBtn = document.createElement("button");
       toggleBtn.type = "button";
@@ -103,15 +128,66 @@ async function initInbox() {
       deleteBtn.textContent = "Delete";
       deleteBtn.addEventListener("click", () => deleteSubmission(s));
 
+      actions.appendChild(replyBtn);
       actions.appendChild(toggleBtn);
       actions.appendChild(deleteBtn);
 
-      card.appendChild(header);
-      card.appendChild(meta);
-      card.appendChild(message);
       card.appendChild(actions);
       listEl.appendChild(card);
     });
+  }
+
+  function openReplyForm(submission) {
+    document.querySelectorAll(".inbox-reply-form").forEach((f) => f.remove());
+
+    const card = document.querySelector(`.inbox-card[data-submission-id="${submission.id}"]`);
+    if (!card) return;
+
+    const form = document.createElement("form");
+    form.className = "manage-form inbox-reply-form";
+    form.innerHTML = `
+      <label>Your reply to ${submission.name}</label>
+      <textarea name="reply" rows="4" required placeholder="Type your reply..."></textarea>
+      <div class="manage-form-actions">
+        <button type="submit" class="btn btn-primary">Save &amp; Open Email</button>
+        <button type="button" class="btn btn-secondary" data-cancel>Cancel</button>
+      </div>
+    `;
+
+    if (submission.reply) form.reply.value = submission.reply;
+
+    form.querySelector("[data-cancel]").addEventListener("click", () => form.remove());
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const text = form.reply.value.trim();
+      if (!text) return;
+      await saveReply(submission, text);
+    });
+
+    card.appendChild(form);
+    form.reply.focus();
+  }
+
+  async function saveReply(submission, text) {
+    const repliedAt = new Date().toISOString();
+    const { error } = await supabaseClient
+      .from("contact_submissions")
+      .update({ reply: text, replied_at: repliedAt, status: "resolved" })
+      .eq("id", submission.id);
+
+    if (error) return showMessage(error.message, "error");
+
+    submission.reply = text;
+    submission.replied_at = repliedAt;
+    submission.status = "resolved";
+    renderStats();
+    renderList();
+    showMessage("Reply saved. Opening your email client to send it...", "success");
+
+    const subject = encodeURIComponent("Re: " + (submission.reason || "Your message to Linh Hoa"));
+    const body = encodeURIComponent(text);
+    window.location.href = `mailto:${submission.email}?subject=${subject}&body=${body}`;
   }
 
   filterBtns.forEach((btn) => {
@@ -146,7 +222,7 @@ async function initInbox() {
 
   const { data, error } = await supabaseClient
     .from("contact_submissions")
-    .select("id, name, email, reason, message, status, created_at")
+    .select("id, name, email, reason, message, status, reply, replied_at, created_at")
     .order("created_at", { ascending: false });
 
   if (error) {
