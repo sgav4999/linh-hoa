@@ -1341,6 +1341,71 @@ a { color: inherit; }
   margin-top: 16px;
 }
 
+/* Students roster (staff) */
+.students-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.students-search {
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font: inherit;
+  min-width: 260px;
+}
+
+.students-search:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.students-stats {
+  color: var(--muted);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.students-table-wrap {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow-x: auto;
+}
+
+.students-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.students-table th {
+  text-align: left;
+  padding: 14px 20px;
+  background: var(--surface-alt);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.students-table td {
+  padding: 14px 20px;
+  border-top: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.students-empty {
+  text-align: center;
+  color: var(--muted);
+  padding: 32px 20px !important;
+}
+
 /* Responsive */
 @media (max-width: 960px) {
   .services-grid { grid-template-columns: repeat(2, 1fr); }

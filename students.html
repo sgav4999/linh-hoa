@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Manage Course — Linh Hoa</title>
+<title>Enrolled Students — Linh Hoa</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -17,8 +17,8 @@
     <div class="nav-wrap" id="navWrap">
       <nav class="nav">
         <a href="dashboard.html">Dashboard</a>
-        <a href="students.html">Students</a>
-        <a href="course.html">View Course</a>
+        <a href="students.html" class="active">Students</a>
+        <a href="manage-course.html">Manage Course</a>
       </nav>
       <button id="logoutBtn" class="btn btn-logout btn-header">Log Out</button>
     </div>
@@ -28,27 +28,38 @@
   </div>
 </header>
 
-<main id="manageRoot">
+<main id="studentsRoot">
   <section class="page-hero">
     <div class="hero-glow"></div>
     <div class="container">
       <span class="eyebrow">Staff Only</span>
-      <h1 id="manageCourseTitle">Manage Course Content</h1>
-      <p>Add, edit, or remove modules and lessons. Students see these changes immediately.</p>
+      <h1>Enrolled Students</h1>
+      <p>Everyone who has created an account, students and staff.</p>
     </div>
   </section>
 
   <section class="page-section">
-    <div class="container manage-container">
+    <div class="container">
       <div id="formMessage" class="form-message"></div>
 
-      <div class="manage-toolbar">
-        <button id="addModuleBtn" class="btn btn-primary">+ Add Module</button>
+      <div class="students-toolbar">
+        <input type="search" id="studentSearch" placeholder="Search by name or email..." class="students-search">
+        <div id="studentStats" class="students-stats"></div>
       </div>
 
-      <div id="moduleFormContainer"></div>
-
-      <div id="moduleManageList"></div>
+      <div class="students-table-wrap">
+        <table class="students-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Joined</th>
+            </tr>
+          </thead>
+          <tbody id="studentsTableBody"></tbody>
+        </table>
+      </div>
     </div>
   </section>
 </main>
@@ -65,6 +76,6 @@
 <script src="supabase-config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script src="auth.js"></script>
-<script src="manage-course.js"></script>
+<script src="students.js"></script>
 </body>
 </html>
