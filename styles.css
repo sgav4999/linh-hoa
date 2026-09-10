@@ -1342,6 +1342,16 @@ a { color: inherit; }
   color: var(--muted);
 }
 
+.account-current-email {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+.account-current-email strong {
+  color: var(--text);
+}
+
 /* Checkout */
 .checkout-layout {
   display: grid;

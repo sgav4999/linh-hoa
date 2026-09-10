@@ -26,7 +26,7 @@ async function initAccount() {
 
   const { data: profile, error: profileError } = await supabaseClient
     .from("profiles")
-    .select("full_name, email, avatar_url")
+    .select("full_name, email, avatar_url, phone")
     .eq("id", session.user.id)
     .single();
 
@@ -36,7 +36,8 @@ async function initAccount() {
 
   const currentFullName = (profile && profile.full_name) || "";
   document.getElementById("fullName").value = currentFullName;
-  document.getElementById("email").value = session.user.email;
+  document.getElementById("phone").value = (profile && profile.phone) || "";
+  document.getElementById("currentEmailDisplay").textContent = session.user.email;
 
   let pendingAvatarUrl = (profile && profile.avatar_url) || null;
   renderAvatarPreview(pendingAvatarUrl, currentFullName);
@@ -64,10 +65,11 @@ async function initAccount() {
   document.getElementById("profileForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     const fullName = document.getElementById("fullName").value.trim();
+    const phone = document.getElementById("phone").value.trim();
 
     const { error } = await supabaseClient
       .from("profiles")
-      .update({ full_name: fullName, avatar_url: pendingAvatarUrl })
+      .update({ full_name: fullName, phone: phone || null, avatar_url: pendingAvatarUrl })
       .eq("id", session.user.id);
 
     if (error) {
@@ -77,6 +79,25 @@ async function initAccount() {
 
     await supabaseClient.auth.updateUser({ data: { full_name: fullName } });
     showMessage("Profile updated.", "success");
+  });
+
+  document.getElementById("emailForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const newEmail = document.getElementById("newEmail").value.trim();
+
+    if (!newEmail || newEmail === session.user.email) {
+      showMessage("Enter a different email address.", "error");
+      return;
+    }
+
+    const { error } = await supabaseClient.auth.updateUser({ email: newEmail });
+    if (error) {
+      showMessage(error.message, "error");
+      return;
+    }
+
+    showMessage(`Confirmation link sent to ${newEmail}. Your email won't change until you click it.`, "success");
+    e.target.reset();
   });
 
   document.getElementById("passwordForm").addEventListener("submit", async (e) => {
