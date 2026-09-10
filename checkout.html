@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout — Linh Hoa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">Linh<span>Hoa</span></a>
+    <div class="nav-wrap" id="navWrap">
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="courses.html">Courses</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <a href="login.html" class="btn-header-secondary" id="navLoginLink">Log In</a>
+      <a href="signup.html" class="btn btn-primary btn-header" id="navSignupLink">Sign Up</a>
+      <a href="dashboard.html" class="btn-header-secondary" id="navDashboardLink" style="display:none;">Dashboard</a>
+      <button class="btn btn-logout btn-header" id="logoutBtn" style="display:none;">Log Out</button>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="hero-glow"></div>
+  <div class="container reveal visible">
+    <span class="eyebrow">Checkout</span>
+    <h1>Complete your enrollment</h1>
+    <p>Review your order, then continue to payment.</p>
+  </div>
+</section>
+
+<main>
+  <section class="page-section">
+    <div class="container checkout-layout">
+      <div class="checkout-summary">
+        <h2>Order Summary</h2>
+        <div class="checkout-course-card">
+          <span class="course-tag" id="checkoutTag">Life + Health</span>
+          <h3 id="checkoutTitle">Life &amp; Health Combo</h3>
+          <p class="course-desc" id="checkoutDesc"></p>
+          <ul class="course-features" id="checkoutFeatures"></ul>
+        </div>
+        <div class="checkout-total">
+          <span>Total</span>
+          <span id="checkoutPrice">$249</span>
+        </div>
+      </div>
+
+      <div class="contact-card checkout-form-card">
+        <div id="formMessage" class="form-message"></div>
+        <form class="contact-form" id="checkoutForm">
+          <div>
+            <label for="name">Full name</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg">Continue to Payment</button>
+          <p class="checkout-note">You won't be charged yet — payment happens on the next step.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-bottom">
+    <div class="container">
+      <p>&copy; <span id="year"></span> Linh Hoa. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<script src="supabase-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="auth.js"></script>
+<script src="checkout.js"></script>
+</body>
+</html>
