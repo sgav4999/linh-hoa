@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Course — Linh Hoa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">Linh<span>Hoa</span></a>
+    <div class="nav-wrap" id="navWrap">
+      <nav class="nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="courses.html">Courses</a>
+      </nav>
+      <button id="logoutBtn" class="btn btn-secondary btn-header">Log Out</button>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="courseRoot">
+  <section class="course-layout">
+    <aside class="course-sidebar">
+      <a href="dashboard.html" class="course-back">&larr; Back to Dashboard</a>
+      <h1 id="courseTitle" class="course-sidebar-title">&nbsp;</h1>
+
+      <div class="course-progress">
+        <div class="course-progress-label">
+          <span id="progressText">0 of 0 lessons complete</span>
+          <span id="progressPercent">0%</span>
+        </div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="progressFill" style="width: 0%;"></div>
+        </div>
+      </div>
+
+      <nav id="moduleList" class="module-list"></nav>
+    </aside>
+
+    <div class="course-content">
+      <div class="lesson-meta">
+        <span class="eyebrow eyebrow-dark" id="lessonModuleLabel">Module</span>
+        <span class="lesson-duration" id="lessonDuration"></span>
+      </div>
+      <h2 id="lessonTitle">&nbsp;</h2>
+      <p class="lesson-description" id="lessonDescription"></p>
+
+      <div id="lessonBody" class="lesson-body"></div>
+
+      <div class="lesson-actions">
+        <label class="lesson-complete-toggle">
+          <input type="checkbox" id="completeCheckbox">
+          Mark this lesson complete
+        </label>
+      </div>
+
+      <div class="lesson-nav">
+        <button id="prevLessonBtn" class="btn btn-secondary" disabled>&larr; Previous</button>
+        <button id="nextLessonBtn" class="btn btn-primary">Next &rarr;</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-bottom">
+    <div class="container">
+      <p>&copy; <span id="year"></span> Linh Hoa. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<script src="supabase-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="auth.js"></script>
+<script src="course-data.js"></script>
+<script src="course.js"></script>
+</body>
+</html>

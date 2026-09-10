@@ -116,12 +116,13 @@ if (dashboardRoot) {
       el.style.display = role === "staff" ? "" : "none";
     });
   })();
+}
 
-  const logoutBtn = document.getElementById("logoutBtn");
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", async () => {
-      await supabaseClient.auth.signOut();
-      window.location.href = "login.html";
-    });
-  }
+// Log out (shared across any page with a #logoutBtn)
+const logoutBtn = document.getElementById("logoutBtn");
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", async () => {
+    await supabaseClient.auth.signOut();
+    window.location.href = "login.html";
+  });
 }

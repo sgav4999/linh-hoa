@@ -51,10 +51,10 @@
           <h2>Continue where you left off</h2>
         </div>
         <div class="dashboard-grid">
-          <div class="dashboard-card reveal">
+          <a href="course.html" class="dashboard-card reveal dashboard-card-link">
             <h3>Life &amp; Health Combo</h3>
-            <p>0% complete &middot; 40 course hours</p>
-          </div>
+            <p id="courseProgressSummary">40 course hours &middot; Self-paced</p>
+          </a>
           <div class="dashboard-card reveal" style="transition-delay: 0.08s;">
             <h3>Practice Exams</h3>
             <p>Take unlimited timed practice exams anytime.</p>
@@ -103,5 +103,19 @@
 <script src="supabase-config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script src="auth.js"></script>
+<script src="course-data.js"></script>
+<script>
+  (function () {
+    if (typeof COURSE_DATA === "undefined") return;
+    const total = COURSE_DATA.modules.reduce((sum, mod) => sum + mod.lessons.length, 0);
+    let completed = [];
+    try {
+      completed = JSON.parse(localStorage.getItem("linhhoa_progress_" + COURSE_DATA.id)) || [];
+    } catch (e) {}
+    const percent = total ? Math.round((completed.length / total) * 100) : 0;
+    const summary = document.getElementById("courseProgressSummary");
+    if (summary) summary.textContent = `${percent}% complete · 40 course hours`;
+  })();
+</script>
 </body>
 </html>
