@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Practice Exam — Linh Hoa</title>
+<title>Account Settings — Linh Hoa</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -17,7 +17,6 @@
     <div class="nav-wrap" id="navWrap">
       <nav class="nav">
         <a href="dashboard.html">Dashboard</a>
-        <a href="course.html">Course</a>
       </nav>
       <div class="user-menu" id="userMenu">
         <button class="user-menu-trigger" id="userMenuTrigger" type="button" aria-label="Account menu">
@@ -40,49 +39,56 @@
   </div>
 </header>
 
-<main id="examRoot">
+<main id="accountRoot">
   <section class="page-hero">
     <div class="hero-glow"></div>
     <div class="container">
-      <span class="eyebrow">Practice Exam</span>
-      <h1>Test your knowledge</h1>
-      <p>Unlimited practice questions pulled from the state exam content outline.</p>
+      <span class="eyebrow">Account</span>
+      <h1>Account Settings</h1>
+      <p>Update your profile photo, name, and password.</p>
     </div>
   </section>
 
   <section class="page-section">
-    <div class="container exam-container">
+    <div class="container account-container">
       <div id="formMessage" class="form-message"></div>
 
-      <div id="examIntro" class="exam-intro">
-        <p id="examIntroText">Loading questions...</p>
-        <button id="startExamBtn" class="btn btn-primary btn-lg">Start Exam</button>
+      <div class="contact-card">
+        <h2 class="account-card-title">Profile</h2>
+        <form class="contact-form" id="profileForm">
+          <div class="account-avatar-row">
+            <span class="user-avatar account-avatar-preview" id="avatarPreview"></span>
+            <div>
+              <label for="avatarInput" class="btn btn-secondary">Change Photo</label>
+              <input type="file" id="avatarInput" accept="image/*" hidden>
+              <p class="account-avatar-hint">JPG or PNG, up to a few MB.</p>
+            </div>
+          </div>
+          <div>
+            <label for="fullName">Full name</label>
+            <input type="text" id="fullName" name="fullName" required>
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" disabled>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg">Save Changes</button>
+        </form>
       </div>
 
-      <div id="examQuiz" class="exam-quiz" hidden>
-        <div class="exam-status-bar">
-          <span id="examProgress"></span>
-          <span id="examTimer">0:00</span>
-        </div>
-        <div class="progress-bar-track"><div class="progress-bar-fill" id="examProgressFill" style="width: 0%;"></div></div>
-
-        <h2 id="examQuestionText" class="exam-question"></h2>
-        <div id="examOptions" class="exam-options"></div>
-
-        <div class="lesson-nav">
-          <button id="examPrevBtn" class="btn btn-secondary">&larr; Previous</button>
-          <button id="examNextBtn" class="btn btn-primary">Next &rarr;</button>
-        </div>
-      </div>
-
-      <div id="examResults" class="exam-results" hidden>
-        <div class="exam-score">
-          <span id="examScorePercent" class="exam-score-percent"></span>
-          <span id="examScoreLabel" class="exam-score-label"></span>
-        </div>
-        <p id="examTimeTaken" class="exam-time-taken"></p>
-        <button id="retakeExamBtn" class="btn btn-primary">Retake Exam</button>
-        <div id="examReview" class="exam-review"></div>
+      <div class="contact-card account-password-card">
+        <h2 class="account-card-title">Change Password</h2>
+        <form class="contact-form" id="passwordForm">
+          <div>
+            <label for="newPassword">New password</label>
+            <input type="password" id="newPassword" minlength="6" required autocomplete="new-password">
+          </div>
+          <div>
+            <label for="confirmPassword">Confirm new password</label>
+            <input type="password" id="confirmPassword" minlength="6" required autocomplete="new-password">
+          </div>
+          <button type="submit" class="btn btn-secondary btn-lg">Update Password</button>
+        </form>
       </div>
     </div>
   </section>
@@ -100,6 +106,6 @@
 <script src="supabase-config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script src="auth.js"></script>
-<script src="practice-exam.js"></script>
+<script src="account.js"></script>
 </body>
 </html>

@@ -127,16 +127,56 @@ if (logoutBtn) {
   });
 }
 
-// Marketing-page header: swap Log In/Sign Up for Dashboard/Log Out when already signed in.
-const navLoginLink = document.getElementById("navLoginLink");
-if (navLoginLink) {
+// Header user menu: avatar + dropdown (Dashboard / Account Settings / Log Out).
+// On marketing pages this also swaps out the Log In / Sign Up links.
+const userMenuEl = document.getElementById("userMenu");
+if (userMenuEl) {
   (async () => {
     const { data: { session } } = await supabaseClient.auth.getSession();
     if (!session) return;
 
-    navLoginLink.style.display = "none";
-    document.getElementById("navSignupLink").style.display = "none";
-    document.getElementById("navDashboardLink").style.display = "";
-    document.getElementById("logoutBtn").style.display = "";
+    const loginLink = document.getElementById("navLoginLink");
+    const signupLink = document.getElementById("navSignupLink");
+    if (loginLink) loginLink.style.display = "none";
+    if (signupLink) signupLink.style.display = "none";
+    userMenuEl.style.display = "";
+
+    const { data: profile } = await supabaseClient
+      .from("profiles")
+      .select("full_name, email, avatar_url")
+      .eq("id", session.user.id)
+      .single();
+
+    const name = (profile && profile.full_name) || session.user.email;
+    const email = (profile && profile.email) || session.user.email;
+    const avatarUrl = profile && profile.avatar_url;
+
+    const nameEl = document.getElementById("userMenuName");
+    const emailEl = document.getElementById("userMenuEmail");
+    if (nameEl) nameEl.textContent = name;
+    if (emailEl) emailEl.textContent = email;
+
+    const avatarEl = document.getElementById("userAvatar");
+    if (avatarEl) {
+      if (avatarUrl) {
+        avatarEl.style.backgroundImage = `url("${avatarUrl}")`;
+        avatarEl.textContent = "";
+      } else {
+        avatarEl.textContent = name.trim().slice(0, 1).toUpperCase();
+      }
+    }
   })();
+
+  const trigger = document.getElementById("userMenuTrigger");
+  const dropdown = document.getElementById("userMenuDropdown");
+  if (trigger && dropdown) {
+    trigger.addEventListener("click", (e) => {
+      e.stopPropagation();
+      dropdown.hidden = !dropdown.hidden;
+    });
+    dropdown.addEventListener("click", (e) => e.stopPropagation());
+    document.addEventListener("click", () => {
+      dropdown.hidden = true;
+    });
+  }
 }

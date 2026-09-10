@@ -23,8 +23,20 @@
       </nav>
       <a href="login.html" class="btn-header-secondary" id="navLoginLink">Log In</a>
       <a href="signup.html" class="btn btn-primary btn-header" id="navSignupLink">Sign Up</a>
-      <a href="dashboard.html" class="btn-header-secondary" id="navDashboardLink" style="display:none;">Dashboard</a>
-      <button class="btn btn-logout btn-header" id="logoutBtn" style="display:none;">Log Out</button>
+      <div class="user-menu" id="userMenu" style="display:none;">
+        <button class="user-menu-trigger" id="userMenuTrigger" type="button" aria-label="Account menu">
+          <span class="user-avatar" id="userAvatar"></span>
+        </button>
+        <div class="user-menu-dropdown" id="userMenuDropdown" hidden>
+          <div class="user-menu-info">
+            <strong id="userMenuName">&nbsp;</strong>
+            <span id="userMenuEmail">&nbsp;</span>
+          </div>
+          <a href="dashboard.html">Dashboard</a>
+          <a href="account.html">Account Settings</a>
+          <button type="button" id="logoutBtn">Log Out</button>
+        </div>
+      </div>
     </div>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
       <span></span><span></span><span></span>

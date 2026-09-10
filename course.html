@@ -18,7 +18,20 @@
       <nav class="nav">
         <a href="dashboard.html">Dashboard</a>
       </nav>
-      <button id="logoutBtn" class="btn btn-logout btn-header">Log Out</button>
+      <div class="user-menu" id="userMenu">
+        <button class="user-menu-trigger" id="userMenuTrigger" type="button" aria-label="Account menu">
+          <span class="user-avatar" id="userAvatar"></span>
+        </button>
+        <div class="user-menu-dropdown" id="userMenuDropdown" hidden>
+          <div class="user-menu-info">
+            <strong id="userMenuName">&nbsp;</strong>
+            <span id="userMenuEmail">&nbsp;</span>
+          </div>
+          <a href="dashboard.html">Dashboard</a>
+          <a href="account.html">Account Settings</a>
+          <button type="button" id="logoutBtn">Log Out</button>
+        </div>
+      </div>
     </div>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
       <span></span><span></span><span></span>
