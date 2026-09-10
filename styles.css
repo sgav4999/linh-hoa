@@ -1227,6 +1227,10 @@ a { color: inherit; }
   margin-bottom: 24px;
 }
 
+.manage-view-course-btn {
+  margin-right: -12px;
+}
+
 .manage-empty {
   color: var(--muted);
   padding: 24px 0;
