@@ -82,6 +82,21 @@ function animateStatNumber(el) {
   requestAnimationFrame(tick);
 }
 
+// Subtle cursor-tracking parallax tilt on the homepage hero illustration.
+const heroIllustration = document.querySelector(".hero-illustration");
+if (heroIllustration && window.matchMedia("(hover: hover)").matches && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const heroSection = document.querySelector(".hero");
+  heroSection.addEventListener("mousemove", (e) => {
+    const rect = heroSection.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    heroIllustration.style.transform = `rotateY(${x * 10}deg) rotateX(${y * -10}deg)`;
+  });
+  heroSection.addEventListener("mouseleave", () => {
+    heroIllustration.style.transform = "";
+  });
+}
+
 // Scroll-reveal + stat count-up, both gated on the same intersection check.
 const revealEls = document.querySelectorAll(".reveal:not(.visible)");
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
