@@ -1507,6 +1507,17 @@ a { color: inherit; }
   font-weight: 400;
 }
 
+.lesson-quiz-explanation::before {
+  content: "Explanation";
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
 [data-theme="dark"] .lesson-quiz-feedback.correct { background: rgba(20, 108, 67, 0.22); color: #6fe3a8; }
 [data-theme="dark"] .lesson-quiz-feedback.incorrect { background: rgba(179, 38, 30, 0.18); color: #ff8a80; }
 
