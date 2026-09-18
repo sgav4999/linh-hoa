@@ -49,6 +49,7 @@ async function initExam() {
 
   let currentIndex = 0;
   let answers = new Array(questions.length).fill(null);
+  let submitted = new Array(questions.length).fill(false);
   let timerInterval = null;
   let startTime = null;
   let elapsedSeconds = 0;
@@ -75,6 +76,7 @@ async function initExam() {
 
   function renderQuestion() {
     const q = questions[currentIndex];
+    const isSubmitted = submitted[currentIndex];
     document.getElementById("examProgress").textContent = `Question ${currentIndex + 1} of ${questions.length}`;
     document.getElementById("examProgressFill").style.width = `${((currentIndex + 1) / questions.length) * 100}%`;
     document.getElementById("examQuestionText").textContent = q.question;
@@ -86,11 +88,18 @@ async function initExam() {
       option.className = "quiz-option";
       if (answers[currentIndex] === letter) option.classList.add("selected");
 
+      if (isSubmitted) {
+        option.classList.add("locked");
+        if (letter === q.correct_choice) option.classList.add("correct");
+        else if (letter === answers[currentIndex]) option.classList.add("incorrect");
+      }
+
       const input = document.createElement("input");
       input.type = "radio";
       input.name = "examOption";
       input.value = letter;
       input.checked = answers[currentIndex] === letter;
+      input.disabled = isSubmitted;
       input.addEventListener("change", () => {
         answers[currentIndex] = letter;
         renderQuestion();
@@ -104,11 +113,42 @@ async function initExam() {
       optionsEl.appendChild(option);
     });
 
+    const checkBtn = document.getElementById("examCheckBtn");
+    const feedback = document.getElementById("examFeedback");
+    const explanation = document.getElementById("examExplanation");
+
+    if (isSubmitted) {
+      checkBtn.hidden = true;
+      const isCorrect = answers[currentIndex] === q.correct_choice;
+      feedback.hidden = false;
+      feedback.className = "lesson-quiz-feedback " + (isCorrect ? "correct" : "incorrect");
+      feedback.textContent = isCorrect
+        ? "Correct!"
+        : `Incorrect. Correct answer: ${q.correct_choice.toUpperCase()}) ${q["choice_" + q.correct_choice]}`;
+      if (!isCorrect && q.explanation) {
+        explanation.hidden = false;
+        explanation.textContent = q.explanation;
+      } else {
+        explanation.hidden = true;
+      }
+    } else {
+      checkBtn.hidden = false;
+      checkBtn.disabled = !answers[currentIndex];
+      feedback.hidden = true;
+      explanation.hidden = true;
+    }
+
     const prevBtn = document.getElementById("examPrevBtn");
     const nextBtn = document.getElementById("examNextBtn");
     prevBtn.disabled = currentIndex === 0;
-    nextBtn.textContent = currentIndex === questions.length - 1 ? "Submit Exam" : "Next →";
+    nextBtn.textContent = currentIndex === questions.length - 1 ? "Finish" : "Next →";
   }
+
+  document.getElementById("examCheckBtn").addEventListener("click", () => {
+    if (!answers[currentIndex]) return;
+    submitted[currentIndex] = true;
+    renderQuestion();
+  });
 
   document.getElementById("examPrevBtn").addEventListener("click", () => {
     if (currentIndex > 0) {
@@ -185,6 +225,7 @@ async function initExam() {
     document.getElementById("examQuiz").hidden = false;
     currentIndex = 0;
     answers = new Array(questions.length).fill(null);
+    submitted = new Array(questions.length).fill(false);
     startTimer();
     renderQuestion();
   });

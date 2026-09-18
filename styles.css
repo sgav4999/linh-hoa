@@ -2047,6 +2047,22 @@ a { color: inherit; }
   background: var(--accent-soft);
 }
 
+.quiz-option.locked { cursor: default; }
+.quiz-option.locked:hover { border-color: var(--line); }
+
+.quiz-option.correct {
+  border-color: #146c43;
+  background: rgba(20, 108, 67, 0.12);
+}
+
+.quiz-option.incorrect {
+  border-color: #b3261e;
+  background: rgba(179, 38, 30, 0.1);
+}
+
+[data-theme="dark"] .quiz-option.correct { background: rgba(20, 108, 67, 0.22); }
+[data-theme="dark"] .quiz-option.incorrect { background: rgba(179, 38, 30, 0.18); }
+
 .quiz-option input { accent-color: var(--accent); width: 18px; height: 18px; }
 
 .exam-results { padding: 20px 0; }
