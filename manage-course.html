@@ -55,9 +55,15 @@
     <div class="container manage-container">
       <div id="formMessage" class="form-message"></div>
 
+      <div class="manage-toolbar" id="courseSwitcher" style="margin-bottom:20px;">
+        <a href="manage-course.html?course=life" class="btn btn-secondary" data-course="life">Life</a>
+        <a href="manage-course.html?course=health" class="btn btn-secondary" data-course="health">Health</a>
+        <a href="manage-course.html?course=life-health-combo" class="btn btn-secondary" data-course="life-health-combo">Life &amp; Health Combo</a>
+      </div>
+
       <div class="manage-toolbar">
         <button id="addModuleBtn" class="btn btn-primary">+ Add Module</button>
-        <a href="course.html" class="btn btn-secondary manage-view-course-btn">View Course &rarr;</a>
+        <a href="course.html" class="btn btn-secondary manage-view-course-btn" id="viewCourseLink">View Course &rarr;</a>
       </div>
 
       <div id="moduleFormContainer"></div>

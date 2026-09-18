@@ -1,4 +1,5 @@
 const examRoot = document.getElementById("examRoot");
+const EXAM_COURSE_SLUG = new URLSearchParams(window.location.search).get("course") || "life-health-combo";
 
 async function initExam() {
   const { data: { session } } = await supabaseClient.auth.getSession();
@@ -13,9 +14,23 @@ async function initExam() {
     messageEl.className = "form-message " + type;
   }
 
+  const { data: course, error: courseError } = await supabaseClient
+    .from("courses")
+    .select("id, title")
+    .eq("slug", EXAM_COURSE_SLUG)
+    .single();
+
+  if (courseError || !course) {
+    showMessage("Could not load this course.", "error");
+    return;
+  }
+
+  document.getElementById("examEyebrow").textContent = "Practice Exam · " + course.title;
+
   const { data: questions, error } = await supabaseClient
     .from("practice_questions")
     .select("id, question, choice_a, choice_b, choice_c, choice_d, correct_choice, explanation")
+    .eq("course_id", course.id)
     .order("position");
 
   if (error) {

@@ -49,7 +49,7 @@
     <div class="hero-glow"></div>
     <div class="container">
       <span class="eyebrow">Staff Only</span>
-      <h1>Manage Practice Exam</h1>
+      <h1 id="manageExamTitle">Manage Practice Exam</h1>
       <p>Add, edit, or remove questions. Students see these changes the next time they start an exam.</p>
     </div>
   </section>
@@ -57,6 +57,12 @@
   <section class="page-section">
     <div class="container manage-container">
       <div id="formMessage" class="form-message"></div>
+
+      <div class="manage-toolbar" id="courseSwitcher" style="margin-bottom:20px;">
+        <a href="manage-exam.html?course=life" class="btn btn-secondary" data-course="life">Life</a>
+        <a href="manage-exam.html?course=health" class="btn btn-secondary" data-course="health">Health</a>
+        <a href="manage-exam.html?course=life-health-combo" class="btn btn-secondary" data-course="life-health-combo">Life &amp; Health Combo</a>
+      </div>
 
       <div class="manage-toolbar">
         <button id="addQuestionBtn" class="btn btn-primary">+ Add Question</button>

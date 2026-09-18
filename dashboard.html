@@ -65,15 +65,19 @@
           <h2>Continue where you left off</h2>
         </div>
         <div class="dashboard-grid">
-          <a href="course.html" class="dashboard-card reveal dashboard-card-link">
+          <a href="course.html?course=life" class="dashboard-card reveal dashboard-card-link">
+            <h3>Life Insurance License</h3>
+            <p id="courseProgressSummary-life">20 course hours &middot; Self-paced</p>
+          </a>
+          <a href="course.html?course=health" class="dashboard-card reveal dashboard-card-link" style="transition-delay: 0.08s;">
+            <h3>Health Insurance License</h3>
+            <p id="courseProgressSummary-health">20 course hours &middot; Self-paced</p>
+          </a>
+          <a href="course.html?course=life-health-combo" class="dashboard-card reveal dashboard-card-link" style="transition-delay: 0.16s;">
             <h3>Life &amp; Health Combo</h3>
-            <p id="courseProgressSummary">40 course hours &middot; Self-paced</p>
+            <p id="courseProgressSummary-life-health-combo">40 course hours &middot; Self-paced</p>
           </a>
-          <a href="practice-exam.html" class="dashboard-card reveal dashboard-card-link" style="transition-delay: 0.08s;">
-            <h3>Practice Exams</h3>
-            <p>Take unlimited timed practice exams anytime.</p>
-          </a>
-          <div class="dashboard-card reveal" style="transition-delay: 0.16s;">
+          <div class="dashboard-card reveal" style="transition-delay: 0.24s;">
             <h3>Study Guide</h3>
             <p>Download your printable study guide and flashcards.</p>
           </div>
@@ -123,29 +127,40 @@
 <script src="auth.js"></script>
 <script>
   (async function () {
-    const COURSE_SLUG = "life-health-combo";
+    const COURSES = [
+      { slug: "life", hours: 20 },
+      { slug: "health", hours: 20 },
+      { slug: "life-health-combo", hours: 40 },
+    ];
     const { data: { session } } = await supabaseClient.auth.getSession();
-    const { data: course } = await supabaseClient.from("courses").select("id").eq("slug", COURSE_SLUG).single();
-    if (!course) return;
 
-    const { count: total } = await supabaseClient
-      .from("lessons")
-      .select("id, modules!inner(course_id)", { count: "exact", head: true })
-      .eq("modules.course_id", course.id);
+    await Promise.all(
+      COURSES.map(async ({ slug, hours }) => {
+        const summary = document.getElementById("courseProgressSummary-" + slug);
+        if (!summary) return;
 
-    let completedCount = 0;
-    if (session) {
-      const { count } = await supabaseClient
-        .from("lesson_progress")
-        .select("lesson_id, lessons!inner(modules!inner(course_id))", { count: "exact", head: true })
-        .eq("user_id", session.user.id)
-        .eq("lessons.modules.course_id", course.id);
-      completedCount = count || 0;
-    }
+        const { data: course } = await supabaseClient.from("courses").select("id").eq("slug", slug).single();
+        if (!course) return;
 
-    const percent = total ? Math.round((completedCount / total) * 100) : 0;
-    const summary = document.getElementById("courseProgressSummary");
-    if (summary) summary.textContent = `${percent}% complete · 40 course hours`;
+        const { count: total } = await supabaseClient
+          .from("lessons")
+          .select("id, modules!inner(course_id)", { count: "exact", head: true })
+          .eq("modules.course_id", course.id);
+
+        let completedCount = 0;
+        if (session) {
+          const { count } = await supabaseClient
+            .from("lesson_progress")
+            .select("lesson_id, lessons!inner(modules!inner(course_id))", { count: "exact", head: true })
+            .eq("user_id", session.user.id)
+            .eq("lessons.modules.course_id", course.id);
+          completedCount = count || 0;
+        }
+
+        const percent = total ? Math.round((completedCount / total) * 100) : 0;
+        summary.textContent = `${percent}% complete · ${hours} course hours`;
+      })
+    );
   })();
 </script>
 </body>

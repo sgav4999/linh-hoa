@@ -1,4 +1,5 @@
 const manageExamRoot = document.getElementById("manageExamRoot");
+const MANAGE_EXAM_COURSE_SLUG = new URLSearchParams(window.location.search).get("course") || "life-health-combo";
 
 async function initManageExam() {
   const { data: { session } } = await supabaseClient.auth.getSession();
@@ -12,6 +13,18 @@ async function initManageExam() {
     return;
   }
 
+  document.querySelectorAll("#courseSwitcher [data-course]").forEach((tab) => {
+    const isActive = tab.dataset.course === MANAGE_EXAM_COURSE_SLUG;
+    tab.classList.toggle("btn-primary", isActive);
+    tab.classList.toggle("btn-secondary", !isActive);
+  });
+
+  const { data: course, error: courseError } = await supabaseClient
+    .from("courses")
+    .select("id, title")
+    .eq("slug", MANAGE_EXAM_COURSE_SLUG)
+    .single();
+
   const messageEl = document.getElementById("formMessage");
   let questions = [];
 
@@ -19,6 +32,14 @@ async function initManageExam() {
     messageEl.textContent = text;
     messageEl.className = "form-message " + type;
   }
+
+  if (courseError || !course) {
+    showMessage("Could not load this course.", "error");
+    return;
+  }
+
+  document.getElementById("manageExamTitle").textContent = "Manage Practice Exam: " + course.title;
+  const courseId = course.id;
 
   function button(label, onClick, extraClass) {
     const b = document.createElement("button");
@@ -33,6 +54,7 @@ async function initManageExam() {
     const { data, error } = await supabaseClient
       .from("practice_questions")
       .select("id, question, choice_a, choice_b, choice_c, choice_d, correct_choice, explanation, position")
+      .eq("course_id", courseId)
       .order("position");
     if (error) {
       showMessage("Could not load questions: " + error.message, "error");
@@ -182,10 +204,11 @@ async function initManageExam() {
       } else {
         const { count } = await supabaseClient
           .from("practice_questions")
-          .select("id", { count: "exact", head: true });
+          .select("id", { count: "exact", head: true })
+          .eq("course_id", courseId);
         const { error } = await supabaseClient
           .from("practice_questions")
-          .insert({ ...payload, position: (count || 0) + 1 });
+          .insert({ ...payload, course_id: courseId, position: (count || 0) + 1 });
         if (error) return showMessage(error.message, "error");
         showMessage("Question added.", "success");
       }

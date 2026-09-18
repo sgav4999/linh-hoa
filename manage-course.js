@@ -1,5 +1,5 @@
 const manageRoot = document.getElementById("manageRoot");
-const MANAGE_COURSE_SLUG = "life-health-combo";
+const MANAGE_COURSE_SLUG = new URLSearchParams(window.location.search).get("course") || "life-health-combo";
 
 async function initManage() {
   const { data: { session } } = await supabaseClient.auth.getSession();
@@ -321,6 +321,13 @@ async function initManage() {
     );
     refresh();
   }
+
+  document.getElementById("viewCourseLink").href = "course.html?course=" + encodeURIComponent(MANAGE_COURSE_SLUG);
+  document.querySelectorAll("#courseSwitcher [data-course]").forEach((tab) => {
+    const isActive = tab.dataset.course === MANAGE_COURSE_SLUG;
+    tab.classList.toggle("btn-primary", isActive);
+    tab.classList.toggle("btn-secondary", !isActive);
+  });
 
   const course = await loadCourse();
   if (!course) return;

@@ -1,5 +1,5 @@
 const courseRoot = document.getElementById("courseRoot");
-const COURSE_SLUG = "life-health-combo";
+const COURSE_SLUG = new URLSearchParams(window.location.search).get("course") || "life-health-combo";
 
 async function initCourse() {
   const { data: { session } } = await supabaseClient.auth.getSession();
@@ -211,6 +211,7 @@ async function initCourse() {
   window.addEventListener("hashchange", renderLesson);
 
   document.getElementById("courseTitle").textContent = course.title;
+  document.getElementById("coursePracticeExamLink").href = "practice-exam.html?course=" + encodeURIComponent(COURSE_SLUG);
   renderLesson();
 }
 
