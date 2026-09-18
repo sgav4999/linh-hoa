@@ -1413,7 +1413,53 @@ a { color: inherit; }
 }
 
 .lesson-body p { margin: 0 0 16px; }
-.lesson-body ul { margin: 0 0 16px; padding-left: 20px; }
+.lesson-body ul, .lesson-body ol { margin: 0 0 16px; padding-left: 20px; }
+.lesson-body li { margin-bottom: 6px; }
+
+.lesson-body h3 {
+  font-size: 1.2rem;
+  margin: 36px 0 16px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.lesson-quiz-item {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-bottom: 16px;
+  background: var(--surface-alt);
+}
+
+.lesson-quiz-item p:first-child { margin-bottom: 12px; }
+
+.lesson-quiz-item ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 12px;
+}
+
+.lesson-quiz-item li {
+  padding: 6px 0;
+  font-size: 0.95rem;
+}
+
+.lesson-quiz-item details {
+  font-size: 0.92rem;
+}
+
+.lesson-quiz-item summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.lesson-quiz-item summary:hover { color: var(--accent-dark); }
+
+.lesson-quiz-item details p {
+  margin: 10px 0 0;
+  color: var(--text);
+}
 
 .video-wrapper {
   position: relative;
