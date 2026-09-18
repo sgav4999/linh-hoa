@@ -1,5 +1,19 @@
 document.getElementById("year").textContent = new Date().getFullYear();
 
+const themeToggle = document.getElementById("themeToggle");
+if (themeToggle) {
+  themeToggle.addEventListener("click", () => {
+    const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+    if (isDark) {
+      document.documentElement.removeAttribute("data-theme");
+      localStorage.setItem("linhhoa_theme", "light");
+    } else {
+      document.documentElement.setAttribute("data-theme", "dark");
+      localStorage.setItem("linhhoa_theme", "dark");
+    }
+  });
+}
+
 const navToggle = document.getElementById("navToggle");
 const navWrap = document.getElementById("navWrap");
 
