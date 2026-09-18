@@ -220,6 +220,7 @@ a { color: inherit; }
 
 .btn:hover { transform: translateY(-2px); }
 .btn:active { transform: translateY(0); }
+.btn[hidden] { display: none; }
 
 .btn-lg { padding: 15px 32px; font-size: 1rem; }
 
@@ -2064,6 +2065,15 @@ a { color: inherit; }
 [data-theme="dark"] .quiz-option.incorrect { background: rgba(179, 38, 30, 0.18); }
 
 .quiz-option input { accent-color: var(--accent); width: 18px; height: 18px; }
+
+#examCheckBtn { margin-bottom: 20px; }
+
+.exam-quiz .lesson-quiz-feedback,
+.exam-quiz .lesson-quiz-explanation {
+  margin-bottom: 20px;
+}
+
+.exam-quiz .lesson-nav { margin-top: 8px; }
 
 .exam-results { padding: 20px 0; }
 
