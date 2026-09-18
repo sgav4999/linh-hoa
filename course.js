@@ -9,6 +9,7 @@ function initLessonQuizzes(container) {
   container.querySelectorAll(".lesson-quiz-item").forEach((item) => {
     const correct = item.dataset.correct;
     const feedback = item.querySelector(".lesson-quiz-feedback");
+    const explanation = item.querySelector(".lesson-quiz-explanation");
     const options = item.querySelectorAll(".lesson-quiz-option");
     options.forEach((btn) => {
       btn.addEventListener("click", () => {
@@ -28,6 +29,7 @@ function initLessonQuizzes(container) {
           feedback.className = "lesson-quiz-feedback incorrect";
         }
         feedback.hidden = false;
+        if (explanation) explanation.hidden = false;
       });
     });
   });

@@ -1495,6 +1495,17 @@ a { color: inherit; }
   color: #b3261e;
 }
 
+.lesson-quiz-explanation {
+  margin: 10px 0 0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 400;
+}
+
 [data-theme="dark"] .lesson-quiz-feedback.correct { background: rgba(20, 108, 67, 0.22); color: #6fe3a8; }
 [data-theme="dark"] .lesson-quiz-feedback.incorrect { background: rgba(179, 38, 30, 0.18); color: #ff8a80; }
 
