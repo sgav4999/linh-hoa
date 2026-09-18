@@ -1,6 +1,38 @@
 const courseRoot = document.getElementById("courseRoot");
 const COURSE_SLUG = new URLSearchParams(window.location.search).get("course") || "life-health-combo";
 
+// Wires up the "Check Your Knowledge" quiz blocks embedded in lesson HTML
+// (see .lesson-quiz-item / data-correct in generated lesson content).
+// Each question is answered independently: click a choice to submit it,
+// see correct/incorrect immediately, and the correct answer is revealed.
+function initLessonQuizzes(container) {
+  container.querySelectorAll(".lesson-quiz-item").forEach((item) => {
+    const correct = item.dataset.correct;
+    const feedback = item.querySelector(".lesson-quiz-feedback");
+    const options = item.querySelectorAll(".lesson-quiz-option");
+    options.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const letter = btn.dataset.letter;
+        options.forEach((b) => { b.disabled = true; });
+
+        const correctBtn = item.querySelector(`.lesson-quiz-option[data-letter="${correct}"]`);
+        if (letter === correct) {
+          btn.classList.add("correct");
+          feedback.textContent = "Correct!";
+          feedback.className = "lesson-quiz-feedback correct";
+        } else {
+          btn.classList.add("incorrect");
+          if (correctBtn) correctBtn.classList.add("correct");
+          const correctText = correctBtn ? correctBtn.textContent.replace(/^[A-D]\)\s*/, "") : "";
+          feedback.textContent = `Incorrect. Correct answer: ${correct.toUpperCase()}) ${correctText}`;
+          feedback.className = "lesson-quiz-feedback incorrect";
+        }
+        feedback.hidden = false;
+      });
+    });
+  });
+}
+
 async function initCourse() {
   const { data: { session } } = await supabaseClient.auth.getSession();
   if (!session) {
@@ -169,6 +201,7 @@ async function initCourse() {
       body.innerHTML = `<div class="video-wrapper"><iframe src="${lesson.video_url}" title="${lesson.title}" frameborder="0" allowfullscreen></iframe></div>`;
     } else {
       body.innerHTML = lesson.content || "";
+      initLessonQuizzes(body);
     }
 
     const checkbox = document.getElementById("completeCheckbox");
