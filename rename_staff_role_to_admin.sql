@@ -71,14 +71,26 @@ create policy "Admin can read all profiles" on public.profiles
   for select
   using (((auth.jwt() -> 'app_metadata'::text) ->> 'role'::text) = 'admin'::text);
 
--- === Part 2: migrate the two accounts already promoted under the old name ===
+-- === Part 2: drop the old check constraint before touching any rows ===
+-- (it was still locked to ('student', 'staff'), which is why the first
+-- run failed the moment it tried to write 'admin')
+
+alter table public.profiles drop constraint profiles_role_check;
+
+-- === Part 3: migrate every account still holding the old 'staff' value ===
+-- Not just the two emails from before — if anyone else's account picked
+-- up 'staff' another way, it has to be converted too, or Part 4 below
+-- fails re-adding the constraint (which is exactly what happened on the
+-- second run: some row still said 'staff').
 
 update auth.users
 set raw_app_meta_data = raw_app_meta_data || '{"role": "admin"}'::jsonb
-where email in ('damshane73@gmail.com', '9999winningteam@gmail.com')
-  and (raw_app_meta_data ->> 'role') = 'staff';
+where (raw_app_meta_data ->> 'role') = 'staff';
 
 update public.profiles
 set role = 'admin'
-where email in ('damshane73@gmail.com', '9999winningteam@gmail.com')
-  and role = 'staff';
+where role = 'staff';
+
+-- === Part 4: re-add the constraint, now that no row still says 'staff' ===
+
+alter table public.profiles add constraint profiles_role_check check (role in ('student', 'admin'));
