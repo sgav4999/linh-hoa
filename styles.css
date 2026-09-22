@@ -1459,6 +1459,23 @@ a { color: inherit; }
   border-top: 1px solid var(--line);
 }
 
+.lesson-body figure {
+  margin: 0 0 24px;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.lesson-body figure img { width: 100%; max-width: 560px; display: block; margin: 0 auto; }
+
+.lesson-body figcaption {
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-top: 10px;
+}
+
 .lesson-quiz-item {
   border: 1px solid var(--line);
   border-radius: var(--radius);
