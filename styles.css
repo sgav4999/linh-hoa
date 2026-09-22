@@ -1311,6 +1311,19 @@ a { color: inherit; }
 
 .course-back:hover { color: var(--accent); }
 
+.page-hero .back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  margin-bottom: 16px;
+}
+
+.page-hero .back-link:hover { color: #fff; }
+
 .course-sidebar-title {
   font-size: 1.15rem;
   margin-bottom: 20px;
