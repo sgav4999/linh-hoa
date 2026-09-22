@@ -137,8 +137,10 @@ if (userMenuEl) {
 
     const loginLink = document.getElementById("navLoginLink");
     const signupLink = document.getElementById("navSignupLink");
+    const themeToggleNav = document.getElementById("themeToggleNav");
     if (loginLink) loginLink.style.display = "none";
     if (signupLink) signupLink.style.display = "none";
+    if (themeToggleNav) themeToggleNav.style.display = "none";
     userMenuEl.style.display = "";
 
     const { data: profile } = await supabaseClient

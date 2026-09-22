@@ -1,17 +1,27 @@
 document.getElementById("year").textContent = new Date().getFullYear();
 
-const themeToggle = document.getElementById("themeToggle");
-if (themeToggle) {
-  themeToggle.addEventListener("click", () => {
-    const isDark = document.documentElement.getAttribute("data-theme") === "dark";
-    if (isDark) {
-      document.documentElement.removeAttribute("data-theme");
-      localStorage.setItem("linhhoa_theme", "light");
-    } else {
-      document.documentElement.setAttribute("data-theme", "dark");
-      localStorage.setItem("linhhoa_theme", "dark");
-    }
+const themeToggles = document.querySelectorAll(".js-theme-toggle");
+function syncThemeToggleLabels() {
+  const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+  document.querySelectorAll(".dropdown-theme-toggle-label").forEach((el) => {
+    el.textContent = isDark ? "Light Mode" : "Dark Mode";
   });
+}
+if (themeToggles.length) {
+  themeToggles.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+      if (isDark) {
+        document.documentElement.removeAttribute("data-theme");
+        localStorage.setItem("linhhoa_theme", "light");
+      } else {
+        document.documentElement.setAttribute("data-theme", "dark");
+        localStorage.setItem("linhhoa_theme", "dark");
+      }
+      syncThemeToggleLabels();
+    });
+  });
+  syncThemeToggleLabels();
 }
 
 const navToggle = document.getElementById("navToggle");
