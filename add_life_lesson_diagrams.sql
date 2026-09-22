@@ -34,6 +34,6 @@ where title = 'Types of Life Insurance'
   and content not like '%term-life-cost-by-gender.png%';
 
 -- Verify: should list every course pool it landed in (life and the combo course).
-select course_id, title, content like '%term-life-cost-by-gender.png%' as has_diagrams
+select module_id, title, content like '%term-life-cost-by-gender.png%' as has_diagrams
 from public.lessons
 where title = 'Types of Life Insurance';
