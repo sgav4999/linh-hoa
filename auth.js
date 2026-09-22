@@ -14,15 +14,6 @@ function setLoading(button, isLoading, loadingText, defaultText) {
 // Sign up form
 const signupForm = document.getElementById("signupForm");
 if (signupForm) {
-  const roleCards = signupForm.querySelectorAll(".role-card");
-  roleCards.forEach((card) => {
-    card.addEventListener("click", () => {
-      roleCards.forEach((c) => c.classList.remove("selected"));
-      card.classList.add("selected");
-      card.querySelector('input[type="radio"]').checked = true;
-    });
-  });
-
   signupForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const messageEl = document.getElementById("formMessage");
@@ -30,8 +21,6 @@ if (signupForm) {
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
     const confirmPassword = document.getElementById("confirmPassword").value;
-    const roleInput = signupForm.querySelector('input[name="role"]:checked');
-    const role = roleInput ? roleInput.value : "student";
 
     if (password !== confirmPassword) {
       showMessage(messageEl, "Passwords do not match.", "error");
@@ -41,10 +30,14 @@ if (signupForm) {
     const submitBtn = signupForm.querySelector('button[type="submit"]');
     setLoading(submitBtn, true, "Creating account...", "Create Account");
 
+    // Every self-service signup is a student account. Staff access can
+    // only be granted afterward by an existing staff member (Enrolled
+    // Students page) or directly in the Supabase dashboard — never by
+    // anything the signing-up user submits here.
     const { data, error } = await supabaseClient.auth.signUp({
       email,
       password,
-      options: { data: { full_name: fullName, role: role } },
+      options: { data: { full_name: fullName } },
     });
 
     setLoading(submitBtn, false, "Creating account...", "Create Account");
@@ -59,7 +52,6 @@ if (signupForm) {
     } else {
       showMessage(messageEl, "Account created! Check your email to confirm it, then log in.", "success");
       signupForm.reset();
-      roleCards.forEach((c) => c.classList.remove("selected"));
     }
   });
 }
@@ -100,7 +92,7 @@ if (dashboardRoot) {
     }
 
     const user = session.user;
-    const role = user.user_metadata && user.user_metadata.role === "staff" ? "staff" : "student";
+    const role = user.app_metadata && user.app_metadata.role === "staff" ? "staff" : "student";
 
     document.getElementById("userName").textContent = (user.user_metadata && user.user_metadata.full_name) || user.email;
     document.getElementById("userEmail").textContent = user.email;

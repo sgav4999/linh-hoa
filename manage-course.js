@@ -7,7 +7,7 @@ async function initManage() {
     window.location.href = "login.html";
     return;
   }
-  const role = session.user.user_metadata && session.user.user_metadata.role;
+  const role = session.user.app_metadata && session.user.app_metadata.role;
   if (role !== "staff") {
     window.location.href = "dashboard.html";
     return;
