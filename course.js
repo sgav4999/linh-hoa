@@ -157,6 +157,7 @@ async function initCourse() {
         link.className = "lesson-item";
         if (lesson.id === currentLessonId()) link.classList.add("active");
         if (completed.has(lesson.id)) link.classList.add("completed");
+        if (lesson.type === "quiz") link.classList.add("lesson-item-quiz");
 
         const check = document.createElement("span");
         check.className = "lesson-check";

@@ -1415,6 +1415,9 @@ a { color: inherit; }
   border-color: var(--accent);
 }
 
+.lesson-item.lesson-item-quiz { font-style: italic; }
+.lesson-item.lesson-item-quiz:not(.active) { color: var(--muted); }
+
 .course-content {
   border: 1px solid var(--line);
   border-radius: var(--radius);
