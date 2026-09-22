@@ -30,10 +30,10 @@ if (signupForm) {
     const submitBtn = signupForm.querySelector('button[type="submit"]');
     setLoading(submitBtn, true, "Creating account...", "Create Account");
 
-    // Every self-service signup is a student account. Staff access can
-    // only be granted afterward by an existing staff member (Enrolled
-    // Students page) or directly in the Supabase dashboard — never by
-    // anything the signing-up user submits here.
+    // Every self-service signup is a student account. Admin access can
+    // only be granted afterward by an existing admin (Enrolled Students
+    // page) or directly in the Supabase dashboard — never by anything
+    // the signing-up user submits here.
     const { data, error } = await supabaseClient.auth.signUp({
       email,
       password,
@@ -92,20 +92,20 @@ if (dashboardRoot) {
     }
 
     const user = session.user;
-    const role = user.app_metadata && user.app_metadata.role === "staff" ? "staff" : "student";
+    const role = user.app_metadata && user.app_metadata.role === "admin" ? "admin" : "student";
 
     document.getElementById("userName").textContent = (user.user_metadata && user.user_metadata.full_name) || user.email;
     document.getElementById("userEmail").textContent = user.email;
 
     const roleBadge = document.getElementById("userRole");
-    roleBadge.textContent = role === "staff" ? "Staff" : "Student";
-    roleBadge.classList.add(role === "staff" ? "role-badge-staff" : "role-badge-student");
+    roleBadge.textContent = role === "admin" ? "Admin" : "Student";
+    roleBadge.classList.add(role === "admin" ? "role-badge-admin" : "role-badge-student");
 
     document.querySelectorAll(".student-only").forEach((el) => {
-      el.style.display = role === "staff" ? "none" : "";
+      el.style.display = role === "admin" ? "none" : "";
     });
-    document.querySelectorAll(".staff-only").forEach((el) => {
-      el.style.display = role === "staff" ? "" : "none";
+    document.querySelectorAll(".admin-only").forEach((el) => {
+      el.style.display = role === "admin" ? "" : "none";
     });
   })();
 }

@@ -41,7 +41,7 @@
 
 [data-theme="dark"] .form-message.error { background: rgba(179, 38, 30, 0.18); color: #ff8a80; }
 [data-theme="dark"] .form-message.success { background: rgba(20, 108, 67, 0.22); color: #6fe3a8; }
-[data-theme="dark"] .role-badge-staff { background: rgba(150, 101, 11, 0.25); color: #f2c46d; }
+[data-theme="dark"] .role-badge-admin { background: rgba(150, 101, 11, 0.25); color: #f2c46d; }
 [data-theme="dark"] .inbox-status-resolved { background: rgba(20, 108, 67, 0.22); color: #6fe3a8; }
 [data-theme="dark"] .review-correct-answer { color: #6fe3a8; }
 [data-theme="dark"] .btn-manage-danger:hover { border-color: #ff8a80; color: #ff8a80; }
@@ -1241,7 +1241,7 @@ a { color: inherit; }
 }
 
 .role-badge-student { background: var(--accent-soft); color: var(--accent-dark); }
-.role-badge-staff { background: #fdf1da; color: #96650b; }
+.role-badge-admin { background: #fdf1da; color: #96650b; }
 
 .dashboard-grid {
   display: grid;
@@ -1677,7 +1677,7 @@ a { color: inherit; }
   margin-top: 12px;
 }
 
-/* Course management (staff) */
+/* Course management (admin) */
 .manage-container {
   max-width: 760px;
 }
@@ -1843,7 +1843,7 @@ a { color: inherit; }
   margin-top: 16px;
 }
 
-/* Students roster (staff) */
+/* Students roster (admin) */
 .students-toolbar {
   display: flex;
   align-items: center;
@@ -1908,7 +1908,7 @@ a { color: inherit; }
   padding: 32px 20px !important;
 }
 
-/* Support inbox (staff) */
+/* Support inbox (admin) */
 .inbox-toolbar {
   display: flex;
   align-items: center;

@@ -7,7 +7,7 @@ async function initStudents() {
     return;
   }
   const role = session.user.app_metadata && session.user.app_metadata.role;
-  if (role !== "staff") {
+  if (role !== "admin") {
     window.location.href = "dashboard.html";
     return;
   }
@@ -54,8 +54,8 @@ async function initStudents() {
 
       const roleTd = document.createElement("td");
       const badge = document.createElement("span");
-      badge.className = "role-badge " + (p.role === "staff" ? "role-badge-staff" : "role-badge-student");
-      badge.textContent = p.role === "staff" ? "Staff" : "Student";
+      badge.className = "role-badge " + (p.role === "admin" ? "role-badge-admin" : "role-badge-student");
+      badge.textContent = p.role === "admin" ? "Admin" : "Student";
       roleTd.appendChild(badge);
 
       const joinedTd = document.createElement("td");
@@ -67,9 +67,9 @@ async function initStudents() {
       } else {
         const actionBtn = document.createElement("button");
         actionBtn.type = "button";
-        const promoting = p.role !== "staff";
+        const promoting = p.role !== "admin";
         actionBtn.className = "btn-manage" + (promoting ? "" : " btn-manage-danger");
-        actionBtn.textContent = promoting ? "Promote to Staff" : "Demote to Student";
+        actionBtn.textContent = promoting ? "Promote to Admin" : "Demote to Student";
         actionBtn.addEventListener("click", () => handleRoleChange(p, actionBtn));
         actionsTd.appendChild(actionBtn);
       }
@@ -84,14 +84,17 @@ async function initStudents() {
   }
 
   async function handleRoleChange(profile, btn) {
-    const action = profile.role === "staff" ? "demote" : "promote";
+    const action = profile.role === "admin" ? "demote" : "promote";
     const verb = action === "promote" ? "Promote" : "Demote";
     const confirmed = window.confirm(
-      `${verb} ${profile.email} ${action === "promote" ? "to staff" : "to a student"}?`
+      `${verb} ${profile.email} ${action === "promote" ? "to admin" : "to a student"}?`
     );
     if (!confirmed) return;
 
     btn.disabled = true;
+    // The deployed Edge Function is still named "set-staff-role" — that's
+    // just its internal endpoint slug and isn't shown anywhere; only the
+    // role value it reads/writes ("admin") changed.
     const { data, error } = await supabaseClient.functions.invoke("set-staff-role", {
       body: { email: profile.email, action },
     });
@@ -117,15 +120,15 @@ async function initStudents() {
     }
 
     profile.role = data.role;
-    showMessage(`${profile.email} is now ${data.role === "staff" ? "staff" : "a student"}.`, "success");
+    showMessage(`${profile.email} is now ${data.role === "admin" ? "an admin" : "a student"}.`, "success");
     renderStats(profiles);
     applySearch();
   }
 
   function renderStats(rows) {
-    const studentCount = rows.filter((p) => p.role !== "staff").length;
-    const staffCount = rows.filter((p) => p.role === "staff").length;
-    statsEl.textContent = `${studentCount} student${studentCount === 1 ? "" : "s"} · ${staffCount} staff`;
+    const studentCount = rows.filter((p) => p.role !== "admin").length;
+    const adminCount = rows.filter((p) => p.role === "admin").length;
+    statsEl.textContent = `${studentCount} student${studentCount === 1 ? "" : "s"} · ${adminCount} admin${adminCount === 1 ? "" : "s"}`;
   }
 
   function applySearch() {

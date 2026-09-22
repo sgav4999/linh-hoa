@@ -1,10 +1,15 @@
-// Promotes or demotes a user's staff role. Deployed as a Supabase Edge
+// Promotes or demotes a user's admin role. Deployed as a Supabase Edge
 // Function so the write to app_metadata always happens with the service
 // role key — a value the browser never has access to. This is the only
-// legitimate way to grant staff access; nothing in the client can do it.
+// legitimate way to grant admin access; nothing in the client can do it.
 //
-// Only an already-staff caller (verified from their own session token,
+// Only an already-admin caller (verified from their own session token,
 // not from anything the request body claims) may call this.
+//
+// The deployed function name ("set-staff-role") is unchanged from when
+// the role was called "staff" — it's just an internal endpoint slug,
+// never shown anywhere, so there was no reason to redeploy under a new
+// name. Only the role value below ("admin") actually matters.
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";
 
@@ -45,8 +50,8 @@ Deno.serve(async (req) => {
     }
     const caller = callerData.user;
     const callerRole = caller.app_metadata && caller.app_metadata.role;
-    if (callerRole !== "staff") {
-      return json({ error: "Only staff can change roles" }, 403);
+    if (callerRole !== "admin") {
+      return json({ error: "Only admins can change roles" }, 403);
     }
 
     const { email, action } = await req.json();
@@ -64,10 +69,10 @@ Deno.serve(async (req) => {
     }
 
     if (action === "demote" && profile.id === caller.id) {
-      return json({ error: "You can't demote yourself. Have another staff member do it." }, 400);
+      return json({ error: "You can't demote yourself. Have another admin do it." }, 400);
     }
 
-    const newRole = action === "promote" ? "staff" : "student";
+    const newRole = action === "promote" ? "admin" : "student";
 
     // Merge into the target's existing app_metadata rather than replacing
     // it outright, so we don't clobber fields Supabase manages itself

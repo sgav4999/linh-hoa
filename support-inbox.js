@@ -7,7 +7,7 @@ async function initInbox() {
     return;
   }
   const role = session.user.app_metadata && session.user.app_metadata.role;
-  if (role !== "staff") {
+  if (role !== "admin") {
     window.location.href = "dashboard.html";
     return;
   }
