@@ -2,6 +2,11 @@
 -- General Insurance Principles, built from the existing practice-exam question bank,
 -- matched to that lesson's topic. Run as one transaction, "without RLS" mode.
 
+-- lessons.type didn't allow 'quiz' yet (only 'text'/'video' originally) --
+-- safe to run even if another one of these three files already did this.
+alter table public.lessons drop constraint if exists lessons_type_check;
+alter table public.lessons add constraint lessons_type_check check (type in ('text', 'video', 'quiz'));
+
 update public.lessons set position = position + 1000 where module_id = '1bde012a-90f6-43c8-a2ac-0d42e8da2638';
 update public.lessons set position = 1 where module_id = '1bde012a-90f6-43c8-a2ac-0d42e8da2638' and title = 'Risk and Risk Management';
 insert into public.lessons (id, module_id, title, description, duration, type, content, position)

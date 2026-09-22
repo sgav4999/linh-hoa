@@ -2,6 +2,11 @@
 -- Health Insurance, built from the existing practice-exam question bank,
 -- matched to that lesson's topic. Run as one transaction, "without RLS" mode.
 
+-- lessons.type didn't allow 'quiz' yet (only 'text'/'video' originally) --
+-- safe to run even if another one of these three files already did this.
+alter table public.lessons drop constraint if exists lessons_type_check;
+alter table public.lessons add constraint lessons_type_check check (type in ('text', 'video', 'quiz'));
+
 update public.lessons set position = position + 1000 where module_id = '0a8d5351-dcb3-46c7-9758-0391fc1c57f6';
 update public.lessons set position = 1 where module_id = '0a8d5351-dcb3-46c7-9758-0391fc1c57f6' and title = 'Medicare and Medicare Supplement';
 insert into public.lessons (id, module_id, title, description, duration, type, content, position)

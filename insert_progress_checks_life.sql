@@ -2,6 +2,11 @@
 -- Life Insurance, built from the existing practice-exam question bank,
 -- matched to that lesson's topic. Run as one transaction, "without RLS" mode.
 
+-- lessons.type didn't allow 'quiz' yet (only 'text'/'video' originally) --
+-- safe to run even if another one of these three files already did this.
+alter table public.lessons drop constraint if exists lessons_type_check;
+alter table public.lessons add constraint lessons_type_check check (type in ('text', 'video', 'quiz'));
+
 update public.lessons set position = position + 1000 where module_id = '929e50a4-5e94-4e93-8f07-fe94b93f0619';
 update public.lessons set position = 1 where module_id = '929e50a4-5e94-4e93-8f07-fe94b93f0619' and title = 'Term Life Insurance';
 insert into public.lessons (id, module_id, title, description, duration, type, content, position)
