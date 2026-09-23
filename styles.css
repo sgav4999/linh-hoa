@@ -1489,8 +1489,9 @@ a { color: inherit; }
 
 .lesson-quiz-question {
   font-weight: 600;
-  margin-bottom: 14px;
 }
+
+.lesson-quiz-item .lesson-quiz-question { margin: 0 0 14px; }
 
 .lesson-quiz-options {
   display: flex;
@@ -1534,13 +1535,16 @@ a { color: inherit; }
 [data-theme="dark"] .lesson-quiz-option.incorrect { background: rgba(179, 38, 30, 0.18); }
 
 .lesson-quiz-feedback {
-  margin: 32px 0 0;
   padding: 10px 14px;
   border-radius: 10px;
   border: 1.5px solid transparent;
   font-size: 0.92rem;
   font-weight: 600;
 }
+
+/* Higher specificity than .lesson-body p (which also matches this <p>
+   and would otherwise win, zeroing out the top margin below). */
+.lesson-quiz-item .lesson-quiz-feedback { margin: 32px 0 0; }
 
 .lesson-quiz-feedback.correct {
   background: rgba(20, 108, 67, 0.12);
@@ -1555,7 +1559,6 @@ a { color: inherit; }
 }
 
 .lesson-quiz-explanation {
-  margin: 10px 0 0;
   padding: 10px 14px;
   border-radius: 10px;
   background: var(--bg);
@@ -1564,6 +1567,8 @@ a { color: inherit; }
   font-size: 0.88rem;
   font-weight: 400;
 }
+
+.lesson-quiz-item .lesson-quiz-explanation { margin: 16px 0 0; }
 
 .lesson-quiz-explanation::before {
   content: "Explanation";
