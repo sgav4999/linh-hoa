@@ -1534,7 +1534,7 @@ a { color: inherit; }
 [data-theme="dark"] .lesson-quiz-option.incorrect { background: rgba(179, 38, 30, 0.18); }
 
 .lesson-quiz-feedback {
-  margin: 14px 0 0;
+  margin: 22px 0 0;
   padding: 10px 14px;
   border-radius: 10px;
   font-size: 0.92rem;
