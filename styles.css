@@ -2369,6 +2369,17 @@ a { color: inherit; }
   border-top: 1px solid var(--line);
 }
 
+.review-explanation::before {
+  content: "Explanation";
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
 /* Responsive */
 @media (max-width: 960px) {
   .services-grid { grid-template-columns: repeat(2, 1fr); }
