@@ -2380,6 +2380,89 @@ a { color: inherit; }
   margin-bottom: 4px;
 }
 
+/* Study guide */
+.study-guide-container { max-width: 780px; }
+
+.study-guide-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+
+.study-guide-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.study-guide-tab {
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1.5px solid var(--line);
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.study-guide-tab:hover { border-color: var(--accent); }
+
+.study-guide-tab.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.study-guide-body {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 40px;
+}
+
+.study-guide-loading { color: var(--muted); }
+
+.study-guide-module { margin-bottom: 36px; }
+.study-guide-module:last-child { margin-bottom: 0; }
+
+.study-guide-module h2 {
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--accent);
+}
+
+.study-guide-lesson { margin-bottom: 24px; }
+.study-guide-lesson:last-child { margin-bottom: 0; }
+
+.study-guide-lesson h3 {
+  font-size: 1.05rem;
+  margin-bottom: 10px;
+  color: var(--accent-dark);
+}
+
+.study-guide-lesson ul {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.study-guide-lesson li {
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+@media print {
+  .site-header, .site-footer, .back-link, .study-guide-toolbar, .hero-glow { display: none !important; }
+  body { background: #fff; color: #000; }
+  .study-guide-body { border: none; padding: 0; }
+  .study-guide-module { page-break-inside: avoid; }
+}
+
 /* Responsive */
 @media (max-width: 960px) {
   .services-grid { grid-template-columns: repeat(2, 1fr); }
@@ -2403,6 +2486,7 @@ a { color: inherit; }
   .course-layout { grid-template-columns: 1fr; }
   .course-sidebar { position: static; max-height: none; }
   .course-content { padding: 28px; }
+  .study-guide-body { padding: 28px; }
 }
 
 @media (max-width: 720px) {

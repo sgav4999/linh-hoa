@@ -263,6 +263,7 @@ async function initCourse() {
 
   document.getElementById("courseTitle").textContent = course.title;
   document.getElementById("coursePracticeExamLink").href = "practice-exam.html?course=" + encodeURIComponent(COURSE_SLUG);
+  document.getElementById("courseStudyGuideLink").href = "study-guide.html?course=" + encodeURIComponent(COURSE_SLUG);
   renderLesson();
 }
 

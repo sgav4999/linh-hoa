@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script>(function(){try{if(localStorage.getItem("linhhoa_theme")==="dark"){document.documentElement.setAttribute("data-theme","dark");}}catch(e){}})();</script>
-<title>Practice Exam — Linh Hua</title>
+<title>Study Guide — Linh Hua</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -16,9 +16,6 @@
   <div class="container header-inner">
     <a href="index.html" class="logo">Linh<span>Hua</span></a>
     <div class="nav-wrap" id="navWrap">
-      <nav class="nav">
-        <a href="course.html">Course</a>
-      </nav>
       <div class="user-menu" id="userMenu">
         <button class="user-menu-trigger" id="userMenuTrigger" type="button" aria-label="Account menu">
           <span class="user-avatar" id="userAvatar"></span>
@@ -45,60 +42,30 @@
   </div>
 </header>
 
-<main id="examRoot">
+<main id="studyGuideRoot">
   <section class="page-hero">
     <div class="hero-glow"></div>
     <div class="container">
       <a href="dashboard.html" class="back-link">&larr; Back to Dashboard</a>
-      <span class="eyebrow" id="examEyebrow">Practice Exam</span>
-      <h1>Test your knowledge</h1>
-      <p>Unlimited practice questions pulled from the state exam content outline.</p>
+      <span class="eyebrow" id="studyGuideEyebrow">Study Guide</span>
+      <h1>Study Guide</h1>
+      <p>A condensed summary of the key facts from every lesson — great for a final review before the exam.</p>
     </div>
   </section>
 
   <section class="page-section">
-    <div class="container exam-container">
-      <div id="formMessage" class="form-message"></div>
-
-      <div id="examIntro" class="exam-intro">
-        <p id="examIntroText">Loading questions...</p>
-        <button id="startExamBtn" class="btn btn-primary btn-lg">Start Exam</button>
+    <div class="container study-guide-container">
+      <div class="study-guide-toolbar">
+        <div class="study-guide-tabs" id="studyGuideTabs">
+          <button type="button" class="study-guide-tab" data-course="life">Life</button>
+          <button type="button" class="study-guide-tab" data-course="health">Health</button>
+          <button type="button" class="study-guide-tab" data-course="life-health-combo">Life &amp; Health Combo</button>
+        </div>
+        <button type="button" class="btn btn-secondary" id="printGuideBtn">Print / Save as PDF</button>
       </div>
 
-      <div id="examQuiz" class="exam-quiz" hidden>
-        <div class="exam-status-bar">
-          <span id="examProgress"></span>
-          <span id="examTimer">0:00</span>
-        </div>
-        <div class="progress-bar-track"><div class="progress-bar-fill" id="examProgressFill" style="width: 0%;"></div></div>
-
-        <button type="button" id="examNavToggle" class="exam-nav-toggle" aria-expanded="false">
-          <span id="examNavToggleLabel">Jump to question</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-        </button>
-        <div id="examNavigator" class="exam-navigator"></div>
-
-        <h2 id="examQuestionText" class="exam-question"></h2>
-        <div id="examListenContainer"></div>
-        <div id="examOptions" class="exam-options"></div>
-        <button id="examCheckBtn" type="button" class="btn btn-secondary">Check Answer</button>
-        <p id="examFeedback" class="lesson-quiz-feedback" hidden></p>
-        <p id="examExplanation" class="lesson-quiz-explanation" hidden></p>
-
-        <div class="lesson-nav">
-          <button id="examPrevBtn" class="btn btn-secondary">&larr; Previous</button>
-          <button id="examNextBtn" class="btn btn-primary">Next &rarr;</button>
-        </div>
-      </div>
-
-      <div id="examResults" class="exam-results" hidden>
-        <div class="exam-score">
-          <span id="examScorePercent" class="exam-score-percent"></span>
-          <span id="examScoreLabel" class="exam-score-label"></span>
-        </div>
-        <p id="examTimeTaken" class="exam-time-taken"></p>
-        <button id="retakeExamBtn" class="btn btn-primary">Retake Exam</button>
-        <div id="examReview" class="exam-review"></div>
+      <div id="studyGuideBody" class="study-guide-body">
+        <p class="study-guide-loading">Loading study guide...</p>
       </div>
     </div>
   </section>
@@ -116,7 +83,6 @@
 <script src="supabase-config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script src="auth.js"></script>
-<script src="tts.js"></script>
-<script src="practice-exam.js"></script>
+<script src="study-guide.js"></script>
 </body>
 </html>
