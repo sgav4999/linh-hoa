@@ -1638,6 +1638,9 @@ a { color: inherit; }
 #lessonListenContainer { margin-bottom: 20px; }
 #lessonListenContainer:empty { margin-bottom: 0; }
 
+#examListenContainer { margin-bottom: 20px; }
+#examListenContainer:empty { margin-bottom: 0; }
+
 [data-theme="dark"] .lesson-quiz-feedback.correct { background: rgba(20, 108, 67, 0.22); color: #6fe3a8; }
 [data-theme="dark"] .lesson-quiz-feedback.incorrect { background: rgba(179, 38, 30, 0.18); color: #ff8a80; }
 
