@@ -705,6 +705,7 @@ a { color: inherit; }
 
 .process-step:hover {
   transform: translateY(-4px);
+  transition-delay: 0s !important;
 }
 
 .process-step:hover .process-num {
@@ -1099,6 +1100,7 @@ a { color: inherit; }
 .course-card:hover {
   box-shadow: 0 20px 48px rgba(20, 22, 31, 0.1);
   transform: translateY(-6px);
+  transition-delay: 0s !important;
 }
 
 .course-card.featured {
@@ -1444,6 +1446,7 @@ a { color: inherit; }
   border-color: var(--accent);
   box-shadow: var(--shadow-md);
   transform: translateY(-3px);
+  transition-delay: 0s !important;
 }
 
 /* Course player */
@@ -2672,6 +2675,7 @@ a { color: inherit; }
 .btn-manage:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px var(--accent-soft);
+  transition-delay: 0s !important;
 }
 
 .nav a:focus-visible,
