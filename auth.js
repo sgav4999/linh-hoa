@@ -208,15 +208,17 @@ if (userMenuEl) {
     if (nameEl) nameEl.textContent = name;
     if (emailEl) emailEl.textContent = email;
 
-    const avatarEl = document.getElementById("userAvatar");
-    if (avatarEl) {
+    const populateAvatar = (el) => {
+      if (!el) return;
       if (avatarUrl) {
-        avatarEl.style.backgroundImage = `url("${avatarUrl}")`;
-        avatarEl.textContent = "";
+        el.style.backgroundImage = `url("${avatarUrl}")`;
+        el.textContent = "";
       } else {
-        avatarEl.textContent = name.trim().slice(0, 1).toUpperCase();
+        el.textContent = name.trim().slice(0, 1).toUpperCase();
       }
-    }
+    };
+    populateAvatar(document.getElementById("userAvatar"));
+    populateAvatar(document.getElementById("dashboardAvatar"));
   })();
 
   const trigger = document.getElementById("userMenuTrigger");

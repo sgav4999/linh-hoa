@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260924m">
+<link rel="stylesheet" href="styles.css?v=20260924n">
 </head>
 <body>
 
@@ -47,12 +47,30 @@
     <div class="hero-glow"></div>
     <div class="container">
       <div class="dashboard-header">
-        <div>
-          <span class="eyebrow">Welcome back</span>
-          <h1 id="userName">&nbsp;</h1>
-          <p id="userEmail" class="dashboard-user-email">&nbsp;</p>
+        <div class="dashboard-header-info">
+          <span class="user-avatar dashboard-avatar" id="dashboardAvatar"></span>
+          <div>
+            <span class="eyebrow">Welcome back</span>
+            <h1 id="userName">&nbsp;</h1>
+            <p id="userEmail" class="dashboard-user-email">&nbsp;</p>
+          </div>
         </div>
         <span id="userRole" class="role-badge"></span>
+      </div>
+
+      <div class="dashboard-stats student-only" id="dashboardStats">
+        <div class="dashboard-stat">
+          <span class="dashboard-stat-num" id="statLessonsCompleted">0</span>
+          <span class="dashboard-stat-label">Lessons Completed</span>
+        </div>
+        <div class="dashboard-stat">
+          <span class="dashboard-stat-num" id="statCoursesInProgress">0</span>
+          <span class="dashboard-stat-label">Courses In Progress</span>
+        </div>
+        <div class="dashboard-stat">
+          <span class="dashboard-stat-num" id="statCoursesCompleted">0</span>
+          <span class="dashboard-stat-label">Courses Completed</span>
+        </div>
       </div>
     </div>
   </section>
@@ -152,13 +170,13 @@
     ];
     const { data: { session } } = await supabaseClient.auth.getSession();
 
-    await Promise.all(
+    const results = await Promise.all(
       COURSES.map(async ({ slug, hours }) => {
         const summary = document.getElementById("courseProgressSummary-" + slug);
-        if (!summary) return;
+        if (!summary) return null;
 
         const { data: course } = await supabaseClient.from("courses").select("id").eq("slug", slug).single();
-        if (!course) return;
+        if (!course) return null;
 
         const { count: total } = await supabaseClient
           .from("lessons")
@@ -180,8 +198,20 @@
 
         const fill = summary.closest(".dashboard-card-progress")?.querySelector(".progress-bar-fill");
         if (fill) fill.style.width = percent + "%";
+
+        return { completedCount, percent };
       })
     );
+
+    const statLessons = document.getElementById("statLessonsCompleted");
+    const statInProgress = document.getElementById("statCoursesInProgress");
+    const statCompleted = document.getElementById("statCoursesCompleted");
+    if (statLessons && statInProgress && statCompleted) {
+      const valid = results.filter(Boolean);
+      statLessons.textContent = valid.reduce((sum, r) => sum + r.completedCount, 0);
+      statInProgress.textContent = valid.filter((r) => r.percent > 0 && r.percent < 100).length;
+      statCompleted.textContent = valid.filter((r) => r.percent === 100).length;
+    }
   })();
 </script>
 </body>
