@@ -81,6 +81,64 @@ if (loginForm) {
   });
 }
 
+// Forgot password form
+const forgotPasswordForm = document.getElementById("forgotPasswordForm");
+if (forgotPasswordForm) {
+  forgotPasswordForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const messageEl = document.getElementById("formMessage");
+    const email = document.getElementById("email").value.trim();
+
+    const submitBtn = forgotPasswordForm.querySelector('button[type="submit"]');
+    setLoading(submitBtn, true, "Sending...", "Send Reset Link");
+
+    const redirectTo = new URL("reset-password.html", window.location.href).href;
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(email, { redirectTo });
+
+    setLoading(submitBtn, false, "Sending...", "Send Reset Link");
+
+    if (error) {
+      showMessage(messageEl, error.message, "error");
+      return;
+    }
+
+    showMessage(messageEl, `If an account exists for ${email}, a reset link has been sent.`, "success");
+    forgotPasswordForm.reset();
+  });
+}
+
+// Reset password form (landed on via the link from the reset email)
+const resetPasswordForm = document.getElementById("resetPasswordForm");
+if (resetPasswordForm) {
+  resetPasswordForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const messageEl = document.getElementById("formMessage");
+    const newPassword = document.getElementById("newPassword").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+
+    if (newPassword !== confirmPassword) {
+      showMessage(messageEl, "Passwords do not match.", "error");
+      return;
+    }
+
+    const submitBtn = resetPasswordForm.querySelector('button[type="submit"]');
+    setLoading(submitBtn, true, "Updating...", "Set New Password");
+
+    const { error } = await supabaseClient.auth.updateUser({ password: newPassword });
+
+    setLoading(submitBtn, false, "Updating...", "Set New Password");
+
+    if (error) {
+      showMessage(messageEl, "This link may be invalid or expired: " + error.message, "error");
+      return;
+    }
+
+    showMessage(messageEl, "Password updated! Redirecting to log in...", "success");
+    resetPasswordForm.reset();
+    setTimeout(() => { window.location.href = "login.html"; }, 1500);
+  });
+}
+
 // Dashboard (gated page)
 const dashboardRoot = document.getElementById("dashboardRoot");
 if (dashboardRoot) {
