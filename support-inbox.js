@@ -67,7 +67,7 @@ async function initInbox() {
       const nameEl = document.createElement("strong");
       nameEl.textContent = s.name;
       const emailLink = document.createElement("a");
-      emailLink.href = `mailto:${s.email}?subject=${encodeURIComponent("Re: " + (s.reason || "Your message to Linh Hoa"))}`;
+      emailLink.href = `mailto:${s.email}?subject=${encodeURIComponent("Re: " + (s.reason || "Your message to Linh Hua"))}`;
       emailLink.textContent = s.email;
       emailLink.className = "inbox-email-link";
       who.appendChild(nameEl);
@@ -185,7 +185,7 @@ async function initInbox() {
     renderList();
     showMessage("Reply saved. Opening your email client to send it...", "success");
 
-    const subject = encodeURIComponent("Re: " + (submission.reason || "Your message to Linh Hoa"));
+    const subject = encodeURIComponent("Re: " + (submission.reason || "Your message to Linh Hua"));
     const body = encodeURIComponent(text);
     window.location.href = `mailto:${submission.email}?subject=${subject}&body=${body}`;
   }
