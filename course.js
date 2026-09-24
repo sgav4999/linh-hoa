@@ -253,6 +253,7 @@ async function initCourse() {
     const index = lessons.findIndex((l) => l.id === currentLessonId());
     if (index < lessons.length - 1) {
       window.location.hash = lessons[index + 1].id;
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
       window.location.href = "dashboard.html";
     }
