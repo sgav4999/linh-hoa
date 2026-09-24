@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260924k">
+<link rel="stylesheet" href="styles.css?v=20260924l">
 </head>
 <body>
 
@@ -57,6 +57,7 @@
     <div class="container account-container">
       <div id="formMessage" class="form-message"></div>
 
+      <div class="account-cards-grid">
       <div class="contact-card">
         <h2 class="account-card-title">Profile</h2>
         <form class="contact-form" id="profileForm">
@@ -83,6 +84,7 @@
       <div class="contact-card account-password-card" id="voiceCard">
         <h2 class="account-card-title">Reading Voice</h2>
         <p class="account-voice-hint">Choose which voice reads lessons and quiz questions aloud. This is saved in your browser, not your account, so it won't follow you to another device.</p>
+        <label for="voiceSelect" class="account-voice-label">Voice</label>
         <div class="account-voice-row">
           <select id="voiceSelect"></select>
           <button type="button" class="btn btn-secondary" id="voiceTestBtn">Test</button>
@@ -115,6 +117,7 @@
           </div>
           <button type="submit" class="btn btn-secondary btn-lg">Update Password</button>
         </form>
+      </div>
       </div>
     </div>
   </section>
