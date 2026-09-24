@@ -2470,6 +2470,9 @@ a { color: inherit; }
   }
   .site-header, .site-footer, .back-link, .study-guide-toolbar, .hero-glow { display: none !important; }
   body { background: #fff; color: #000; }
+  .page-hero { background: none; color: #000; padding: 0 0 24px; }
+  .page-hero h1 { color: #000; }
+  .page-hero p { color: #333; }
   .study-guide-body { border: none; padding: 0; }
   .study-guide-module { page-break-inside: avoid; }
 }
