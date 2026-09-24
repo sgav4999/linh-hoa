@@ -100,6 +100,38 @@ async function initAccount() {
     e.target.reset();
   });
 
+  const voiceSelect = document.getElementById("voiceSelect");
+  const voiceTestBtn = document.getElementById("voiceTestBtn");
+  if (voiceSelect && window.TTS && TTS.supported) {
+    function populateVoices() {
+      const voices = TTS.getVoices().filter((v) => !v.lang || v.lang.toLowerCase().startsWith("en"));
+      const current = TTS.getPreferredVoiceURI();
+      voiceSelect.innerHTML = '<option value="">System default</option>';
+      voices.forEach((v) => {
+        const opt = document.createElement("option");
+        opt.value = v.voiceURI;
+        opt.textContent = v.name + (v.lang ? ` (${v.lang})` : "");
+        if (v.voiceURI === current) opt.selected = true;
+        voiceSelect.appendChild(opt);
+      });
+    }
+    populateVoices();
+    window.speechSynthesis.addEventListener("voiceschanged", populateVoices);
+
+    voiceSelect.addEventListener("change", () => {
+      TTS.setPreferredVoiceURI(voiceSelect.value);
+    });
+
+    if (voiceTestBtn) {
+      voiceTestBtn.addEventListener("click", () => {
+        TTS.speak(() => "This is what this voice sounds like.", voiceTestBtn);
+      });
+    }
+  } else {
+    const voiceCard = document.getElementById("voiceCard");
+    if (voiceCard) voiceCard.hidden = true;
+  }
+
   document.getElementById("passwordForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     const newPassword = document.getElementById("newPassword").value;

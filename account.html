@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260924">
+<link rel="stylesheet" href="styles.css?v=20260924b">
 </head>
 <body>
 
@@ -80,6 +80,15 @@
         </form>
       </div>
 
+      <div class="contact-card account-password-card" id="voiceCard">
+        <h2 class="account-card-title">Reading Voice</h2>
+        <p class="account-voice-hint">Choose which voice reads lessons and quiz questions aloud. This is saved in your browser, not your account, so it won't follow you to another device.</p>
+        <div class="account-voice-row">
+          <select id="voiceSelect"></select>
+          <button type="button" class="btn btn-secondary" id="voiceTestBtn">Test</button>
+        </div>
+      </div>
+
       <div class="contact-card account-password-card">
         <h2 class="account-card-title">Email Address</h2>
         <p class="account-current-email">Current: <strong id="currentEmailDisplay">&nbsp;</strong></p>
@@ -123,6 +132,7 @@
 <script src="supabase-config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script src="auth.js"></script>
+<script src="tts.js"></script>
 <script src="account.js"></script>
 </body>
 </html>

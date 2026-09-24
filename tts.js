@@ -3,7 +3,48 @@
 // API, no cost — voice quality depends on the visitor's browser/OS.
 window.TTS = (() => {
   const supported = "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
+  const VOICE_KEY = "linhhoa_tts_voice";
   let activeButton = null;
+  let voicesCache = [];
+
+  function loadVoices() {
+    if (!supported) return [];
+    voicesCache = window.speechSynthesis.getVoices() || [];
+    return voicesCache;
+  }
+  if (supported) {
+    loadVoices();
+    // Chrome (and some others) populate the voice list asynchronously —
+    // it's often empty on the very first call.
+    window.speechSynthesis.addEventListener("voiceschanged", loadVoices);
+  }
+
+  function getVoices() {
+    return voicesCache.length ? voicesCache : loadVoices();
+  }
+
+  function getPreferredVoiceURI() {
+    try {
+      return localStorage.getItem(VOICE_KEY) || "";
+    } catch (e) {
+      return "";
+    }
+  }
+
+  function setPreferredVoiceURI(uri) {
+    try {
+      if (uri) localStorage.setItem(VOICE_KEY, uri);
+      else localStorage.removeItem(VOICE_KEY);
+    } catch (e) {
+      // localStorage unavailable (private mode, etc.) — just no-op.
+    }
+  }
+
+  function getPreferredVoice() {
+    const uri = getPreferredVoiceURI();
+    if (!uri) return null;
+    return getVoices().find((v) => v.voiceURI === uri) || null;
+  }
 
   function setButtonState(btn, speaking) {
     btn.classList.toggle("is-speaking", speaking);
@@ -27,6 +68,8 @@ window.TTS = (() => {
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.rate = 1;
+    const preferredVoice = getPreferredVoice();
+    if (preferredVoice) utterance.voice = preferredVoice;
     const clear = () => {
       if (activeButton === btn) {
         setButtonState(btn, false);
@@ -68,5 +111,5 @@ window.TTS = (() => {
     return btn;
   }
 
-  return { supported, speak, stop, attach };
+  return { supported, speak, stop, attach, getVoices, getPreferredVoiceURI, setPreferredVoiceURI, getPreferredVoice };
 })();
