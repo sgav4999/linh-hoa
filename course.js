@@ -11,6 +11,12 @@ function initLessonQuizzes(container) {
     const feedback = item.querySelector(".lesson-quiz-feedback");
     const explanation = item.querySelector(".lesson-quiz-explanation");
     const options = item.querySelectorAll(".lesson-quiz-option");
+
+    if (window.TTS) {
+      const listenBtn = TTS.attach(() => item.innerText, { small: true, title: "Listen to this question" });
+      if (listenBtn) item.appendChild(listenBtn);
+    }
+
     options.forEach((btn) => {
       btn.addEventListener("click", () => {
         const letter = btn.dataset.letter;
@@ -199,12 +205,20 @@ async function initCourse() {
     document.getElementById("lessonDuration").textContent = lesson.duration || "";
     document.getElementById("lessonDescription").textContent = lesson.description || "";
 
+    if (window.TTS) TTS.stop();
+    const listenContainer = document.getElementById("lessonListenContainer");
+    listenContainer.innerHTML = "";
+
     const body = document.getElementById("lessonBody");
     if (lesson.type === "video") {
       body.innerHTML = `<div class="video-wrapper"><iframe src="${lesson.video_url}" title="${lesson.title}" frameborder="0" allowfullscreen></iframe></div>`;
     } else {
       body.innerHTML = lesson.content || "";
       initLessonQuizzes(body);
+      if (window.TTS) {
+        const listenBtn = TTS.attach(() => body.innerText, { title: "Listen to this lesson" });
+        if (listenBtn) listenContainer.appendChild(listenBtn);
+      }
     }
 
     const checkbox = document.getElementById("completeCheckbox");

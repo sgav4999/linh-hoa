@@ -1493,9 +1493,10 @@ a { color: inherit; }
 }
 
 .lesson-quiz-item {
+  position: relative;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  padding: 20px 24px;
+  padding: 20px 56px 20px 24px;
   margin-bottom: 28px;
   background: var(--surface-alt);
 }
@@ -1593,6 +1594,49 @@ a { color: inherit; }
   color: var(--accent);
   margin-bottom: 4px;
 }
+
+/* Text-to-speech "Listen" buttons — a full labeled pill (lesson body,
+   practice exam question) and a compact icon-only variant that sits in
+   the corner of each quiz question card. */
+.btn-listen {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.btn-listen:hover { border-color: var(--accent); color: var(--accent); }
+.btn-listen.is-speaking { border-color: var(--accent); color: var(--accent); }
+
+.btn-listen svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+.btn-listen .listen-icon-stop { display: none; }
+.btn-listen.is-speaking .listen-icon-play { display: none; }
+.btn-listen.is-speaking .listen-icon-stop { display: block; }
+
+.btn-listen .listen-label-stop { display: none; }
+.btn-listen.is-speaking .listen-label { display: none; }
+.btn-listen.is-speaking .listen-label-stop { display: inline; }
+
+.btn-listen-sm {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 7px;
+  border-radius: 50%;
+}
+
+#lessonListenContainer { margin-bottom: 20px; }
+#lessonListenContainer:empty { margin-bottom: 0; }
 
 [data-theme="dark"] .lesson-quiz-feedback.correct { background: rgba(20, 108, 67, 0.22); color: #6fe3a8; }
 [data-theme="dark"] .lesson-quiz-feedback.incorrect { background: rgba(179, 38, 30, 0.18); color: #ff8a80; }

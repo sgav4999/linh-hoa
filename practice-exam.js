@@ -81,6 +81,14 @@ async function initExam() {
     document.getElementById("examProgressFill").style.width = `${((currentIndex + 1) / questions.length) * 100}%`;
     document.getElementById("examQuestionText").textContent = q.question;
 
+    if (window.TTS) {
+      TTS.stop();
+      const listenContainer = document.getElementById("examListenContainer");
+      listenContainer.innerHTML = "";
+      const listenBtn = TTS.attach(() => getExamListenText(currentIndex), { title: "Listen to this question" });
+      if (listenBtn) listenContainer.appendChild(listenBtn);
+    }
+
     const optionsEl = document.getElementById("examOptions");
     optionsEl.innerHTML = "";
     ["a", "b", "c", "d"].forEach((letter) => {
@@ -144,6 +152,21 @@ async function initExam() {
     nextBtn.textContent = currentIndex === questions.length - 1 ? "Finish" : "Next →";
   }
 
+  // Built manually rather than read off the DOM, since the on-screen
+  // options have no "A)"/"B)" prefix — only spoken aloud does.
+  function getExamListenText(index) {
+    const q = questions[index];
+    const parts = [q.question];
+    ["a", "b", "c", "d"].forEach((letter) => {
+      if (q["choice_" + letter]) parts.push(letter.toUpperCase() + ". " + q["choice_" + letter]);
+    });
+    const feedback = document.getElementById("examFeedback");
+    if (!feedback.hidden) parts.push(feedback.textContent);
+    const explanation = document.getElementById("examExplanation");
+    if (!explanation.hidden) parts.push("Explanation: " + explanation.textContent);
+    return parts.join(". ");
+  }
+
   document.getElementById("examCheckBtn").addEventListener("click", () => {
     if (!answers[currentIndex]) return;
     submitted[currentIndex] = true;
@@ -167,6 +190,7 @@ async function initExam() {
   });
 
   function submitExam() {
+    if (window.TTS) TTS.stop();
     stopTimer();
     document.getElementById("examQuiz").hidden = true;
     document.getElementById("examResults").hidden = false;

@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260923">
+<link rel="stylesheet" href="styles.css?v=20260924">
 </head>
 <body>
 
@@ -73,6 +73,7 @@
         <div class="progress-bar-track"><div class="progress-bar-fill" id="examProgressFill" style="width: 0%;"></div></div>
 
         <h2 id="examQuestionText" class="exam-question"></h2>
+        <div id="examListenContainer"></div>
         <div id="examOptions" class="exam-options"></div>
         <button id="examCheckBtn" type="button" class="btn btn-secondary">Check Answer</button>
         <p id="examFeedback" class="lesson-quiz-feedback" hidden></p>
@@ -109,6 +110,7 @@
 <script src="supabase-config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script src="auth.js"></script>
+<script src="tts.js"></script>
 <script src="practice-exam.js"></script>
 </body>
 </html>
