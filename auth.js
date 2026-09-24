@@ -152,7 +152,7 @@ if (dashboardRoot) {
     const user = session.user;
     const role = user.app_metadata && user.app_metadata.role === "admin" ? "admin" : "student";
 
-    document.getElementById("userName").textContent = (user.user_metadata && user.user_metadata.full_name) || user.email;
+    document.getElementById("userName").textContent = "Welcome back, " + ((user.user_metadata && user.user_metadata.full_name) || user.email);
     document.getElementById("userEmail").textContent = user.email;
 
     const roleBadge = document.getElementById("userRole");
