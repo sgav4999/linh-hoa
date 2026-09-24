@@ -2457,6 +2457,17 @@ a { color: inherit; }
 }
 
 @media print {
+  /* Force light-mode colors on paper even if the site is set to dark mode —
+     otherwise dark-mode's light text colors end up washed-out on white. */
+  :root {
+    --bg: #ffffff !important;
+    --text: #14161f !important;
+    --muted: #656b7e !important;
+    --line: #e7e8f0 !important;
+    --accent: #5b4dfb !important;
+    --accent-dark: #4636e0 !important;
+    --accent-soft: #eeecff !important;
+  }
   .site-header, .site-footer, .back-link, .study-guide-toolbar, .hero-glow { display: none !important; }
   body { background: #fff; color: #000; }
   .study-guide-body { border: none; padding: 0; }
