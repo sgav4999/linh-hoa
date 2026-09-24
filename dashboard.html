@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260924n">
+<link rel="stylesheet" href="styles.css?v=20260924o">
 </head>
 <body>
 
@@ -62,14 +62,6 @@
         <div class="dashboard-stat">
           <span class="dashboard-stat-num" id="statLessonsCompleted">0</span>
           <span class="dashboard-stat-label">Lessons Completed</span>
-        </div>
-        <div class="dashboard-stat">
-          <span class="dashboard-stat-num" id="statCoursesInProgress">0</span>
-          <span class="dashboard-stat-label">Courses In Progress</span>
-        </div>
-        <div class="dashboard-stat">
-          <span class="dashboard-stat-num" id="statCoursesCompleted">0</span>
-          <span class="dashboard-stat-label">Courses Completed</span>
         </div>
       </div>
     </div>
@@ -204,13 +196,9 @@
     );
 
     const statLessons = document.getElementById("statLessonsCompleted");
-    const statInProgress = document.getElementById("statCoursesInProgress");
-    const statCompleted = document.getElementById("statCoursesCompleted");
-    if (statLessons && statInProgress && statCompleted) {
+    if (statLessons) {
       const valid = results.filter(Boolean);
       statLessons.textContent = valid.reduce((sum, r) => sum + r.completedCount, 0);
-      statInProgress.textContent = valid.filter((r) => r.percent > 0 && r.percent < 100).length;
-      statCompleted.textContent = valid.filter((r) => r.percent === 100).length;
     }
   })();
 </script>
