@@ -50,9 +50,18 @@ async function initExam() {
   let currentIndex = 0;
   let answers = new Array(questions.length).fill(null);
   let submitted = new Array(questions.length).fill(false);
+  let optionOrders = questions.map(() => ["a", "b", "c", "d"]);
   let timerInterval = null;
   let startTime = null;
   let elapsedSeconds = 0;
+
+  function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
 
   function formatTime(totalSeconds) {
     const m = Math.floor(totalSeconds / 60);
@@ -91,7 +100,7 @@ async function initExam() {
 
     const optionsEl = document.getElementById("examOptions");
     optionsEl.innerHTML = "";
-    ["a", "b", "c", "d"].forEach((letter) => {
+    optionOrders[currentIndex].forEach((letter) => {
       const option = document.createElement("label");
       option.className = "quiz-option";
       if (answers[currentIndex] === letter) option.classList.add("selected");
@@ -157,7 +166,7 @@ async function initExam() {
   function getExamListenText(index) {
     const q = questions[index];
     const parts = [q.question];
-    ["a", "b", "c", "d"].forEach((letter) => {
+    optionOrders[index].forEach((letter) => {
       if (q["choice_" + letter]) parts.push(letter.toUpperCase() + ". " + q["choice_" + letter]);
     });
     const feedback = document.getElementById("examFeedback");
@@ -247,6 +256,8 @@ async function initExam() {
     document.getElementById("examIntro").hidden = true;
     document.getElementById("examResults").hidden = true;
     document.getElementById("examQuiz").hidden = false;
+    shuffle(questions);
+    optionOrders = questions.map(() => shuffle(["a", "b", "c", "d"]));
     currentIndex = 0;
     answers = new Array(questions.length).fill(null);
     submitted = new Array(questions.length).fill(false);
