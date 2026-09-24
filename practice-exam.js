@@ -159,7 +159,58 @@ async function initExam() {
     const nextBtn = document.getElementById("examNextBtn");
     prevBtn.disabled = currentIndex === 0;
     nextBtn.textContent = currentIndex === questions.length - 1 ? "Finish" : "Next →";
+
+    updateNavigator();
   }
+
+  function buildNavigator() {
+    const nav = document.getElementById("examNavigator");
+    nav.innerHTML = "";
+    questions.forEach((q, i) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "exam-nav-item";
+      btn.textContent = i + 1;
+      btn.title = "Question " + (i + 1);
+      btn.addEventListener("click", () => {
+        currentIndex = i;
+        renderQuestion();
+        closeNavigator();
+      });
+      nav.appendChild(btn);
+    });
+  }
+
+  function updateNavigator() {
+    const items = document.getElementById("examNavigator").children;
+    for (let i = 0; i < items.length; i++) {
+      const btn = items[i];
+      btn.classList.remove("current", "answered", "correct", "incorrect");
+      if (i === currentIndex) {
+        btn.classList.add("current");
+      } else if (submitted[i]) {
+        btn.classList.add(answers[i] === questions[i].correct_choice ? "correct" : "incorrect");
+      } else if (answers[i]) {
+        btn.classList.add("answered");
+      }
+    }
+  }
+
+  function closeNavigator() {
+    document.getElementById("examNavigator").classList.remove("is-open");
+    document.getElementById("examNavToggle").classList.remove("is-open");
+    document.getElementById("examNavToggle").setAttribute("aria-expanded", "false");
+    document.getElementById("examNavToggleLabel").textContent = "Jump to question";
+  }
+
+  document.getElementById("examNavToggle").addEventListener("click", () => {
+    const toggle = document.getElementById("examNavToggle");
+    const nav = document.getElementById("examNavigator");
+    const isOpen = nav.classList.toggle("is-open");
+    toggle.classList.toggle("is-open", isOpen);
+    toggle.setAttribute("aria-expanded", String(isOpen));
+    document.getElementById("examNavToggleLabel").textContent = isOpen ? "Hide question list" : "Jump to question";
+  });
 
   // Built manually rather than read off the DOM, since the on-screen
   // options have no "A)"/"B)" prefix — only spoken aloud does.
@@ -201,6 +252,7 @@ async function initExam() {
   function submitExam() {
     if (window.TTS) TTS.stop();
     stopTimer();
+    closeNavigator();
     document.getElementById("examQuiz").hidden = true;
     document.getElementById("examResults").hidden = false;
 
@@ -261,6 +313,8 @@ async function initExam() {
     currentIndex = 0;
     answers = new Array(questions.length).fill(null);
     submitted = new Array(questions.length).fill(false);
+    buildNavigator();
+    closeNavigator();
     startTimer();
     renderQuestion();
   });

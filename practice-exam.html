@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260924c">
+<link rel="stylesheet" href="styles.css?v=20260924d">
 </head>
 <body>
 
@@ -71,6 +71,12 @@
           <span id="examTimer">0:00</span>
         </div>
         <div class="progress-bar-track"><div class="progress-bar-fill" id="examProgressFill" style="width: 0%;"></div></div>
+
+        <button type="button" id="examNavToggle" class="exam-nav-toggle" aria-expanded="false">
+          <span id="examNavToggleLabel">Jump to question</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div id="examNavigator" class="exam-navigator"></div>
 
         <h2 id="examQuestionText" class="exam-question"></h2>
         <div id="examListenContainer"></div>
